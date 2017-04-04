@@ -1,0 +1,36 @@
+{
+  "name": "diploma",
+  "version": "1.0.0",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \\\"Error: no test specified\\\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Alek097/Diploma.git"
+  },
+  "author": "Aliaksei_Piatrouski",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Alek097/Diploma/issues"
+  },
+  "homepage": "https://github.com/Alek097/Diploma#readme",
+  "description": "",
+  "devDependencies": {
+    "html-webpack-plugin": "^2.28.0",
+    "transfer-webpack-plugin": "^0.1.4",
+    "ts-loader": "^2.0.3",
+    "tsd": "^0.6.5",
+    "webpack": "^2.3.3",
+    "typescript": "^2.2.2"
+  },
+  "dependencies": {
+    "angular": "^1.6.4",
+    "angular-animate": "^1.6.4",
+    "angular-route": "^1.6.4",
+    "bootstrap": "^3.3.7",
+    "font-awesome": "^4.7.0",
+    "jquery": "^3.2.1",
+    "less": "^2.7.2"
+  }
+}
