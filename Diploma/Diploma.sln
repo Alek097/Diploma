@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.26228.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma", "Diploma\Diploma.csproj", "{5DC442C4-52D9-40B3-9505-214F79C227D0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diploma.Data", "Diploma.Data\Diploma.Data.csproj", "{6EC702D4-A4EA-4EB4-8C28-09A943B9F634}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{5DC442C4-52D9-40B3-9505-214F79C227D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5DC442C4-52D9-40B3-9505-214F79C227D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5DC442C4-52D9-40B3-9505-214F79C227D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EC702D4-A4EA-4EB4-8C28-09A943B9F634}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EC702D4-A4EA-4EB4-8C28-09A943B9F634}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EC702D4-A4EA-4EB4-8C28-09A943B9F634}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EC702D4-A4EA-4EB4-8C28-09A943B9F634}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

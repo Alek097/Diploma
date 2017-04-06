@@ -9,6 +9,11 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using NLog.Web;
+using Microsoft.Extensions.FileProviders;
+using System.IO;
+using Diploma.Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Diploma.Data;
 
 namespace Diploma
 {
@@ -31,6 +36,8 @@ namespace Diploma
         {
             // Add framework services.
             services.AddMvc();
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -40,6 +47,13 @@ namespace Diploma
 
             app.AddNLogWeb();
             app.UseMvc();
+            app.UseIdentity();
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Bundles")),
+                RequestPath = "/Bundles"
+            });
         }
     }
 }
