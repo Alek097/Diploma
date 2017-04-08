@@ -3,15 +3,9 @@
 <head>
     <title></title>
     <meta charset="utf-8" />
-    <% for (var cssFile in htmlWebpackPlugin.options.myFilesInjection.css) { %>
-    <link href="<%= htmlWebpackPlugin.options.myFilesInjection.css[cssFile] %>" type="text/css" rel="stylesheet" />
-    <% } %>
-    <% for (var lessFile in htmlWebpackPlugin.options.myFilesInjection.less) { %>
-    <link href="<%= htmlWebpackPlugin.options.myFilesInjection.less[lessFile] %>" type="text/css" rel="stylesheet/less" />
-    <% } %>
-    <% for (var jsFile in htmlWebpackPlugin.options.myFilesInjection.js) { %>
-    <script src="<%= htmlWebpackPlugin.options.myFilesInjection.js[jsFile] %>" type="text/javascript"></script>
-    <% } %>
+    <link href="Bundles/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="Bundles/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="Bundles/app//Style.less" rel="stylesheet/less" />
 </head>
 <body>
     <nav class="navbar navbar-default">
@@ -35,5 +29,12 @@
     <div id="ng-view-container">
         <ng-view></ng-view>
     </div>
+    <script src="Bundles/lib/jquery/dist/jquery.min.js"></script>
+    <script src="Bundles/lib/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="Bundles/lib/angular/angular.min.js"></script>
+    <script src="Bundles/lib/angular-animate/angular-animate.min.js"></script>
+    <script src="Bundles/lib/angular-route/angular-route.min.js"></script>
+    <script src="Bundles/lib/less/dist/less.min.js"></script>
+    <script src="Bundles/app/bundle.js"></script>
 </body>
 </html>

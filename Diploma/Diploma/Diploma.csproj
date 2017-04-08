@@ -24,9 +24,6 @@
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Bundles\" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\Diploma.Core\Diploma.Core.csproj" />
     <ProjectReference Include="..\Diploma.Data\Diploma.Data.csproj" />
     <ProjectReference Include="..\Diploma.Repositories\Diploma.Repositories.csproj" />
