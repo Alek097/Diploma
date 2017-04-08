@@ -14,6 +14,9 @@ using System.IO;
 using Diploma.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Diploma.Data;
+using Diploma.Repositories.Interfaces;
+using Diploma.Repositories;
+using Diploma.Core.ConfigureModels;
 
 namespace Diploma
 {
@@ -38,6 +41,11 @@ namespace Diploma
             services.AddMvc();
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
+
+            services.AddTransient<IContext, ApplicationContext>();
+            services.AddTransient<IAuthorizeRepository, AuthorizeRepository>();
+
+            services.Configure<List<OAuth>>(this.Configuration.GetSection("OAuth"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

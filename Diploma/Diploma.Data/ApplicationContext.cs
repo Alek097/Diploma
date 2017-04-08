@@ -4,10 +4,11 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Diploma.Data
 {
-    public class ApplicationContext : IdentityDbContext<User>
+    public class ApplicationContext : IdentityDbContext<User>, IContext
     {
         public DbSet<Category> Categories { get; set; }
 
@@ -20,6 +21,13 @@ namespace Diploma.Data
         public DbSet<Order> Orders { get; set; }
 
         public DbSet<Ban> Bans { get; set; }
+
+        public DbSet<OAuthState> OAuthStates { get; set; }
+
+        public async Task<int> SaveChangesAsync()
+        {
+            return await Task.Run<int>(() => this.SaveChanges());
+        }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

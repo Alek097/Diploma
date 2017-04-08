@@ -29,7 +29,9 @@ Diploma/Diploma/Bundles/index.html
 Diploma/Diploma/Bundles/lib/*
 Diploma/Diploma/typings/*
 Diploma/Diploma/Scripts/*.js
-Diploma/Diploma/Scripts/*.map
+Diploma/Diploma/Scripts/*.js.map
+Diploma/Diploma/Scripts/**/*.js
+Diploma/Diploma/Scripts/**/*.js.map
 
 # Visual Studio 2015 cache/options directory
 .vs/
