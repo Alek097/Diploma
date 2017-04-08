@@ -25,6 +25,7 @@ bld/
 #Custom
 node_modules/
 Diploma/Diploma/Bundles/app/bundle.js
+Diploma/Diploma/Bundles/app/vendor.js
 Diploma/Diploma/Bundles/lib/*
 Diploma/Diploma/typings/**/
 Diploma/Diploma/typings/**/tsd.d.ts
