@@ -1,6 +1,6 @@
 ﻿import "./Pages/PagesModule";
 
-//import authorizeTemplates from "./Pages/Authorize/AuthorizeView.html";
+import authorizeTemplates from "./Pages/Authorize/AuthorizeView.html";
 
 angular.module('main',
     [
@@ -12,6 +12,8 @@ angular.module('main',
         $routeProvider.when('/authorize',
             <ng.route.IRoute>
             {
-                template: authorizeTemplates
+                template: authorizeTemplates,
+                controller: 'authorizeController',
+                controllerAs: 'ctrl'
             });
     });

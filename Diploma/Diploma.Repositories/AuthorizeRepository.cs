@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Diploma.Core.ViewModels;
 
 namespace Diploma.Repositories
 {
@@ -14,16 +15,34 @@ namespace Diploma.Repositories
     {
         private readonly IContext context;
         private readonly List<OAuth> oauth;
+        private readonly App app;
 
-        public AuthorizeRepository(IContext context, IOptions<List<OAuth>> oauth)
+        private const string setCodeUrl = "api/Authorize/SetCode";
+
+        public AuthorizeRepository(IContext context, IOptions<List<OAuth>> oauth, IOptions<App> app)
         {
             this.context = context;
             this.oauth = oauth.Value;
+            this.app = app.Value;
         }
 
         public void Dispose()
         {
             this.context.Dispose();
+        }
+
+        public async Task<List<OAuthViewModel>> GetOAuthProviders()
+        {
+            return await Task.Run(() =>
+            {
+                return this.oauth.Select((oa) => new OAuthViewModel()
+                {
+                    Name = oa.Name,
+                    Description = oa.Description,
+                    LogoUrl = oa.LogoUrl
+                })
+                .ToList();
+            });
         }
 
         public async Task<string> GetRedirectUrl(string provider)
@@ -32,6 +51,13 @@ namespace Diploma.Repositories
 
             string state = $"{OAuth.Name.ToUpper()}_{Guid.NewGuid()}";
 
+            if (this.app.Domain[this.app.Domain.Length - 1] != '/')
+            {
+                this.app.Domain += '/';
+            }
+
+            string redirectUrl = $"{this.app.Domain}{setCodeUrl}";
+
             this.context.OAuthStates.Add(new OAuthState()
             {
                 State = state
@@ -39,7 +65,7 @@ namespace Diploma.Repositories
 
             await this.context.SaveChangesAsync();
 
-            return $"{string.Format(OAuth.Url, OAuth.Client_id)}&{OAuth.Parameters}&state={state}";
+            return $"{string.Format(OAuth.Url, OAuth.Client_id, redirectUrl)}&{OAuth.Parameters}&state={state}";
         }
     }
 }

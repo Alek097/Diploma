@@ -13,5 +13,9 @@ namespace Diploma.Core.ConfigureModels
         public string Url { get; set; }
 
         public string Parameters { get; set; }
+
+        public string Description { get; set; }
+
+        public string LogoUrl { get; set; }
     }
 }

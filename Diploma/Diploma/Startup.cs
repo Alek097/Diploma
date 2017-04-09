@@ -46,6 +46,7 @@ namespace Diploma
             services.AddTransient<IAuthorizeRepository, AuthorizeRepository>();
 
             services.Configure<List<OAuth>>(this.Configuration.GetSection("OAuth"));
+            services.Configure<App>(this.Configuration.GetSection("App"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +62,12 @@ namespace Diploma
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Bundles")),
                 RequestPath = "/Bundles"
+            });
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Assets")),
+                RequestPath = "/img"
             });
         }
     }

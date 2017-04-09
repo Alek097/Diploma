@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Diploma.Repositories.Interfaces;
+using Diploma.Core.ViewModels;
 
 namespace Diploma.Controllers
 {
@@ -19,9 +20,23 @@ namespace Diploma.Controllers
             this.repository = repository;
         }
 
+        [HttpGet]
+        [Produces("text/plain")]
         public async Task<string> GetRedirectUrl(string provider)
         {
             return await this.repository.GetRedirectUrl(provider);
+        }
+
+        [HttpGet]
+        public async Task<List<OAuthViewModel>> GetOAuthProviders()
+        {
+            return await this.repository.GetOAuthProviders();
+        }
+
+        [HttpGet]
+        public async Task SetCode(string code, string state)
+        {
+            throw new NotImplementedException();
         }
 
         public new void Dispose()
