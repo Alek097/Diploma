@@ -28,7 +28,6 @@ Diploma/Diploma/Bundles/app/bundle.js
 Diploma/Diploma/Bundles/app/vendor.js
 Diploma/Diploma/Bundles/lib/*
 Diploma/Diploma/typings/**/
-Diploma/Diploma/typings/**/tsd.d.ts
 Diploma/Diploma/Scripts/*.js
 Diploma/Diploma/Scripts/*.js.map
 Diploma/Diploma/Scripts/**/*.js
