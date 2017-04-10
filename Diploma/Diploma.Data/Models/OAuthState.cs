@@ -8,6 +8,8 @@ namespace Diploma.Data.Models
     {
         public string State { get; set; }
 
+        public string Provider { get; set; }
+
         public OAuthState()
         {
             this.Id = Guid.NewGuid();

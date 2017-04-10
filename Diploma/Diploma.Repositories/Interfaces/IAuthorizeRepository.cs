@@ -1,7 +1,6 @@
 ﻿using Diploma.Core.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Diploma.Repositories.Interfaces
@@ -10,5 +9,6 @@ namespace Diploma.Repositories.Interfaces
     {
         Task<string> GetRedirectUrl(string provider);
         Task<List<OAuthViewModel>> GetOAuthProviders();
+        Task<string> SetAccessCode(string code, string state);
     }
 }

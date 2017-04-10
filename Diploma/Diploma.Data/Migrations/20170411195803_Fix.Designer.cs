@@ -8,9 +8,10 @@ using Diploma.Data;
 namespace Diploma.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20170411195803_Fix")]
+    partial class Fix
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -257,8 +258,6 @@ namespace Diploma.Data.Migrations
 
                     b.Property<string>("AccessToken");
 
-                    b.Property<string>("Code");
-
                     b.Property<string>("CreateBy");
 
                     b.Property<DateTime?>("CreateDate");
@@ -288,6 +287,8 @@ namespace Diploma.Data.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("AccessFailedCount");
+
+                    b.Property<string>("Code");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();

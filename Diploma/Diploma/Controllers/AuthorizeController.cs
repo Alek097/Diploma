@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Diploma.Repositories.Interfaces;
 using Diploma.Core.ViewModels;
+using Microsoft.Extensions.Logging;
+using Diploma.Core.ConfigureModels;
+using Microsoft.Extensions.Options;
 
 namespace Diploma.Controllers
 {
@@ -14,10 +15,14 @@ namespace Diploma.Controllers
     public class AuthorizeController : Controller
     {
         private readonly IAuthorizeRepository repository;
+        private readonly ILogger<AuthorizeController> logger;
+        private readonly App app;
 
-        public AuthorizeController(IAuthorizeRepository repository)
+        public AuthorizeController(IAuthorizeRepository repository, ILogger<AuthorizeController> logger, IOptions<App> app)
         {
             this.repository = repository;
+            this.logger = logger;
+            this.app = app.Value;
         }
 
         [HttpGet]
@@ -34,9 +39,22 @@ namespace Diploma.Controllers
         }
 
         [HttpGet]
-        public async Task SetCode(string code, string state)
+        public async Task<RedirectResult> SetCode(string code, string state)
         {
-            throw new NotImplementedException();
+            string url = null;
+
+            try
+            {
+                url = await this.repository.SetAccessCode(code, state);
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(ex.Message, ex);
+
+                url = $"{this.app.Domain}#!/error/500/BadRequest";
+            }
+
+            return this.Redirect(url);
         }
 
         public new void Dispose()

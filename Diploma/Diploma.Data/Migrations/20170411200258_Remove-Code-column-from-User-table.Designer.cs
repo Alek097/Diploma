@@ -8,9 +8,10 @@ using Diploma.Data;
 namespace Diploma.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20170411200258_Remove-Code-column-from-User-table")]
+    partial class RemoveCodecolumnfromUsertable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -256,8 +257,6 @@ namespace Diploma.Data.Migrations
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("AccessToken");
-
-                    b.Property<string>("Code");
 
                     b.Property<string>("CreateBy");
 

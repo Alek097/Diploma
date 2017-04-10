@@ -8,9 +8,10 @@ using Diploma.Data;
 namespace Diploma.Data.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    partial class ApplicationContextModelSnapshot : ModelSnapshot
+    [Migration("20170410165415_Add-Addresses-table")]
+    partial class AddAddressestable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -25,21 +26,21 @@ namespace Diploma.Data.Migrations
 
                     b.Property<string>("Country");
 
-                    b.Property<string>("CreateBy");
+                    b.Property<Guid>("CreateBy");
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
                     b.Property<string>("FirstName");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<DateTime?>("LastModifyDate");
+                    b.Property<DateTime>("LastModifyDate");
 
                     b.Property<string>("LastName");
 
                     b.Property<string>("MiddleName");
 
-                    b.Property<string>("ModifyBy");
+                    b.Property<Guid>("ModifyBy");
 
                     b.Property<string>("PhoneNumber");
 
@@ -63,15 +64,15 @@ namespace Diploma.Data.Migrations
 
                     b.Property<string>("Cause");
 
-                    b.Property<string>("CreateBy");
+                    b.Property<Guid>("CreateBy");
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
-                    b.Property<bool>("IsDeleted");
+                    b.Property<bool>("IsActive");
 
-                    b.Property<DateTime?>("LastModifyDate");
+                    b.Property<DateTime>("LastModifyDate");
 
-                    b.Property<string>("ModifyBy");
+                    b.Property<Guid>("ModifyBy");
 
                     b.Property<string>("UserId");
 
@@ -87,17 +88,17 @@ namespace Diploma.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CreateBy");
+                    b.Property<Guid>("CreateBy");
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
                     b.Property<string>("Description");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<DateTime?>("LastModifyDate");
+                    b.Property<DateTime>("LastModifyDate");
 
-                    b.Property<string>("ModifyBy");
+                    b.Property<Guid>("ModifyBy");
 
                     b.Property<string>("Name");
 
@@ -113,15 +114,15 @@ namespace Diploma.Data.Migrations
 
                     b.Property<Guid?>("CharacteristicsGroupId");
 
-                    b.Property<string>("CreateBy");
+                    b.Property<Guid>("CreateBy");
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<DateTime?>("LastModifyDate");
+                    b.Property<DateTime>("LastModifyDate");
 
-                    b.Property<string>("ModifyBy");
+                    b.Property<Guid>("ModifyBy");
 
                     b.Property<string>("Name");
 
@@ -143,15 +144,15 @@ namespace Diploma.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CreateBy");
+                    b.Property<Guid>("CreateBy");
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<DateTime?>("LastModifyDate");
+                    b.Property<DateTime>("LastModifyDate");
 
-                    b.Property<string>("ModifyBy");
+                    b.Property<Guid>("ModifyBy");
 
                     b.Property<string>("Name");
 
@@ -169,15 +170,15 @@ namespace Diploma.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CreateBy");
+                    b.Property<Guid>("CreateBy");
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<DateTime?>("LastModifyDate");
+                    b.Property<DateTime>("LastModifyDate");
 
-                    b.Property<string>("ModifyBy");
+                    b.Property<Guid>("ModifyBy");
 
                     b.Property<string>("Provider");
 
@@ -193,15 +194,15 @@ namespace Diploma.Data.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("CreateBy");
+                    b.Property<Guid>("CreateBy");
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<DateTime?>("LastModifyDate");
+                    b.Property<DateTime>("LastModifyDate");
 
-                    b.Property<string>("ModifyBy");
+                    b.Property<Guid>("ModifyBy");
 
                     b.Property<decimal>("TotalPrice");
 
@@ -221,17 +222,17 @@ namespace Diploma.Data.Migrations
 
                     b.Property<Guid?>("CategoryId");
 
-                    b.Property<string>("CreateBy");
+                    b.Property<Guid>("CreateBy");
 
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
                     b.Property<string>("Description");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<DateTime?>("LastModifyDate");
+                    b.Property<DateTime>("LastModifyDate");
 
-                    b.Property<string>("ModifyBy");
+                    b.Property<Guid>("ModifyBy");
 
                     b.Property<string>("Name");
 
@@ -257,17 +258,15 @@ namespace Diploma.Data.Migrations
 
                     b.Property<string>("AccessToken");
 
-                    b.Property<string>("Code");
+                    b.Property<Guid>("CreateBy");
 
-                    b.Property<string>("CreateBy");
-
-                    b.Property<DateTime?>("CreateDate");
+                    b.Property<DateTime>("CreateDate");
 
                     b.Property<bool>("IsDeleted");
 
-                    b.Property<DateTime?>("LastModifyDate");
+                    b.Property<DateTime>("LastModifyDate");
 
-                    b.Property<string>("ModifyBy");
+                    b.Property<Guid>("ModifyBy");
 
                     b.Property<string>("Provider");
 
@@ -292,10 +291,6 @@ namespace Diploma.Data.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken();
 
-                    b.Property<string>("CreateBy");
-
-                    b.Property<DateTime?>("CreateDate");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256);
 
@@ -303,13 +298,9 @@ namespace Diploma.Data.Migrations
 
                     b.Property<bool>("IsBanned");
 
-                    b.Property<DateTime?>("LastModifyDate");
-
                     b.Property<bool>("LockoutEnabled");
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
-
-                    b.Property<string>("ModifyBy");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);

@@ -8,11 +8,17 @@ namespace Diploma.Core.ConfigureModels
     {
         public string Name { get; set; }
 
-        public string Client_id { get; set; }
+        public string ClientId { get; set; }
 
-        public string Url { get; set; }
+        public string ClientSecret { get; set; }
 
-        public string Parameters { get; set; }
+        public string GetCodeUrl { get; set; }
+
+        public string GetCodeParameters { get; set; }
+
+        public string GetAccessTokenUrl { get; set; }
+
+        public string GetAccessTokenParameters { get; set; }
 
         public string Description { get; set; }
 

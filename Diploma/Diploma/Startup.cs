@@ -39,6 +39,9 @@ namespace Diploma
         {
             // Add framework services.
             services.AddMvc();
+
+            services.AddDbContext<ApplicationContext>();
+
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
 
@@ -55,8 +58,8 @@ namespace Diploma
             loggerFactory.AddNLog();
 
             app.AddNLogWeb();
-            app.UseMvc();
             app.UseIdentity();
+            app.UseMvc();
 
             app.UseStaticFiles(new StaticFileOptions()
             {
