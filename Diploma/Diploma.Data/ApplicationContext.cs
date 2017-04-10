@@ -1,15 +1,16 @@
-﻿using Diploma.Data.Models;
+﻿using Diploma.Core.ConfigureModels;
+using Diploma.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 
 namespace Diploma.Data
 {
     public class ApplicationContext : IdentityDbContext<User>, IContext
     {
+        private readonly App app;
+
         public DbSet<Category> Categories { get; set; }
 
         public DbSet<Product> Products { get; set; }
@@ -24,6 +25,11 @@ namespace Diploma.Data
 
         public DbSet<OAuthState> OAuthStates { get; set; }
 
+        public ApplicationContext(IOptions<App> app)
+        {
+            this.app = app.Value;
+        }
+
         public async Task<int> SaveChangesAsync()
         {
             return await Task.Run<int>(() => this.SaveChanges());
@@ -31,7 +37,8 @@ namespace Diploma.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"data source=(LocalDb)\v11.0;Initial Catalog=Diploma;Integrated Security=True;");
+            //optionsBuilder.UseSqlServer(@"data source=(LocalDb)\v11.0;Initial Catalog=Diploma;Integrated Security=True;");
+            optionsBuilder.UseSqlServer(this.app.ConnectionString);
         }
     }
 }

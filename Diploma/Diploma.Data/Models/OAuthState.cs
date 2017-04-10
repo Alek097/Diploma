@@ -4,13 +4,9 @@ using System.Text;
 
 namespace Diploma.Data.Models
 {
-    public class OAuthState : IBaseEntity<Guid>, IDeletable
+    public class OAuthState : BaseEntity<Guid>
     {
-        public Guid Id { get; set; }
-
         public string State { get; set; }
-
-        public bool IsDeleted { get; set; }
 
         public OAuthState()
         {
