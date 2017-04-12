@@ -10,5 +10,7 @@ namespace Diploma.Repositories.Interfaces
         Task<string> GetRedirectUrl(string provider);
         Task<List<OAuthViewModel>> GetOAuthProviders();
         Task<string> SetAccessCode(string code, string state);
+        Task<UserViewModel> GetUser(string name);
+        Task SignOut();
     }
 }

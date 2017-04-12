@@ -28,5 +28,8 @@
     <ProjectReference Include="..\Diploma.Data\Diploma.Data.csproj" />
     <ProjectReference Include="..\Diploma.Repositories\Diploma.Repositories.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Bundles\app\" />
+  </ItemGroup>
 
 </Project>

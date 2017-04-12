@@ -12,6 +12,8 @@ using System.Net;
 using System.IO;
 using Diploma.Core.OAuthResults;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Diploma.Repositories
 {
@@ -127,14 +129,14 @@ namespace Diploma.Repositories
                     throw new InvalidOperationException($"Provider \"{provider.Name}\" not a found");
             }
 
-            User user = this.context.Users.FirstOrDefault(u => u.Email == oResult.Email);
+            User user = this.context.Users.FirstOrDefault(u => u.UserName == oResult.UserId);
 
             if (user == null)
             {
                 user = new User()
                 {
                     Email = oResult.Email,
-                    UserName = oResult.Email
+                    UserName = oResult.UserId
                 };
 
                 user.Tokens.Add(new Token()
@@ -151,6 +153,79 @@ namespace Diploma.Repositories
             await this.signInManager.SignInAsync(user, false);
 
             return $"/";
+        }
+
+        public async Task<UserViewModel> GetUser(string name)
+        {
+            return await Task.Run(() =>
+            {
+
+                User user = this.context.Users
+                .Include(u => u.Addresses)
+                .Include(u => u.Orders)
+                .First((u) => u.UserName == name);
+
+                UserViewModel result = new UserViewModel()
+                {
+                    UserName = user.UserName,
+                    Email = user.Email,
+                    IsAuthorize = true,
+                    IsBanned = user.IsBanned,
+
+                    Addresses = user.Addresses.Select(a => new AddressViewModel()
+                    {
+                        City = a.City,
+                        Country = a.Country,
+                        FirstName = a.FirstName,
+                        FullName = a.FullName,
+                        LastName = a.LastName,
+                        MiddleName = a.MiddleName,
+                        PhoneNumber = a.PhoneNumber,
+                        PostCode = a.PostCode,
+                        Region = a.Region
+                    }).ToList(),
+
+                    Orders = user.Orders.Select(order => new OrderViewModel()
+                    {
+                        TotalPrice = order.TotalPrice,
+
+                        Products = order.Products.Select(product => new ProductViewModel()
+                        {
+                            Name = product.Name,
+                            Description = product.Description,
+                            PhotoPath = product.PhotoPath,
+                            Price = product.Price,
+
+                            Characteristics = product.Characteristics.Select(characteristics => new CharacteristicViewModel()
+                            {
+                                Name = characteristics.Name,
+                                Value = characteristics.Value
+                            }).ToList(),
+
+                            CharacteristicsGroups = product.CharacteristicsGroups.Select(chGroup => new CharacteristicsGroupViewModel()
+                            {
+                                Name = chGroup.Name,
+
+                                Characteristics = chGroup.Characteristics.Select(characteristics => new CharacteristicViewModel()
+                                {
+                                    Name = characteristics.Name,
+                                    Value = characteristics.Value
+                                }).ToList()
+
+                            }).ToList()
+
+                        }).ToList()
+
+                    }).ToList()
+                };
+
+                return result;
+            });
+        }
+
+        public async Task SignOut()
+        {
+            await this.signInManager.SignOutAsync();
         }
     }
 }

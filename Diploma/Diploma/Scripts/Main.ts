@@ -1,4 +1,7 @@
-﻿import "./Pages/PagesModule";
+﻿import { MainController } from './MainController';
+import { MainService } from './MainService';
+
+import "./Pages/PagesModule";
 
 import authorizeTemplates from "./Pages/Authorize/AuthorizeView.html";
 
@@ -16,4 +19,6 @@ angular.module('main',
                 controller: 'authorizeController',
                 controllerAs: 'ctrl'
             });
-    });
+    })
+    .controller('mainController', MainController)
+    .service('mainService', MainService);

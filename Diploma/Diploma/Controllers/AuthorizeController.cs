@@ -57,6 +57,18 @@ namespace Diploma.Controllers
             return this.Redirect(url);
         }
 
+        [HttpGet]
+        public async Task<UserViewModel> GetUser()
+        {
+            return User.Identity.IsAuthenticated ? await this.repository.GetUser(User.Identity.Name) : new UserViewModel() { IsAuthorize = false };
+        }
+
+        [HttpGet]
+        public async Task SignOut()
+        {
+            await this.repository.SignOut();
+        }
+
         public new void Dispose()
         {
             this.repository.Dispose();
