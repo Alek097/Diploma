@@ -3,12 +3,22 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using System.Linq;
 
 namespace Diploma.Data.Models
 {
     public class User : IdentityUser, IAuditable
     {
-        public bool IsBanned { get; set; }
+        [NotMapped]
+        public bool IsBanned
+        {
+            get
+            {
+                Ban lastBan = this.Bans.FirstOrDefault((b) => !(b.IsDeleted));
+
+                return lastBan != null;
+            }
+        }
 
         public DateTime? CreateDate { get; set; }
 
