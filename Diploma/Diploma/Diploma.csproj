@@ -30,6 +30,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Bundles\app\" />
+    <Folder Include="Bundles\app\" />
   </ItemGroup>
 
 </Project>

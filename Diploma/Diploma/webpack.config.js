@@ -9,10 +9,10 @@ module.exports = {
     entry: {
         bundle: './Scripts/Main.ts',
         vendor: [
-            './Bundles/lib/bootstrap/dist/js/bootstrap.min.js',
-            './Bundles/lib/angular/angular.min.js',
-            './Bundles/lib/angular-animate/angular-animate.min.js',
-            './Bundles/lib/angular-route/angular-route.min.js',
+            './node_modules/bootstrap/dist/js/bootstrap.min.js',
+            './node_modules/angular/angular.min.js',
+            './node_modules/angular-animate/angular-animate.min.js',
+            './node_modules/angular-route/angular-route.min.js',
             './Styles/Style.less'
         ]
     },
@@ -65,9 +65,6 @@ module.exports = {
 
     plugins: [
         new TransferWebpackPlugin([
-            { from: 'node_modules/angular', to: 'lib/angular' },
-            { from: 'node_modules/angular-route', to: 'lib/angular-route' },
-            { from: 'node_modules/angular-animate', to: 'lib/angular-animate' },
             { from: 'node_modules/bootstrap', to: 'lib/bootstrap' },
             { from: 'node_modules/jquery', to: 'lib/jquery' },
             { from: 'node_modules/font-awesome', to: 'lib/font-awesome' },
