@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 using System.Linq;
+using Diploma.Core;
 
 namespace Diploma.Data.Models
 {
@@ -19,6 +20,8 @@ namespace Diploma.Data.Models
                 return lastBan != null;
             }
         }
+
+        public Roles Role { get; set; }
 
         public DateTime? CreateDate { get; set; }
 

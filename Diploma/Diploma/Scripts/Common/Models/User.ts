@@ -1,5 +1,6 @@
 ﻿import { Order } from './Order';
 import { Address } from './Address'
+import { Roles } from './Roles'
 
 export class User {
     public email: string = null;
@@ -10,7 +11,9 @@ export class User {
 
     public isAuthorize: boolean = false;
 
-    public Orders: Order[] = [];
+    public orders: Order[] = [];
 
-    public Addresses: Address[] = [];
+    public addresses: Address[] = [];
+
+    public role: Roles = Roles.User;
 }

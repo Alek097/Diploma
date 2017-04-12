@@ -1,4 +1,5 @@
 ﻿using Diploma.Data.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
@@ -34,5 +35,7 @@ namespace Diploma.Data
         void Edit<TEntity>(TEntity entity, User editBy = null) where TEntity : class;
 
         void Create<TEntity, TId>(TEntity entity, User createBy = null) where TEntity : class, IBaseEntity<TId>;
+
+        bool RoleExists(string name);
     }
 }

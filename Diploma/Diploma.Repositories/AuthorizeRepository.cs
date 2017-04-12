@@ -13,7 +13,7 @@ using System.IO;
 using Diploma.Core.OAuthResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Diploma.Core;
 
 namespace Diploma.Repositories
 {
@@ -136,7 +136,10 @@ namespace Diploma.Repositories
                 user = new User()
                 {
                     Email = oResult.Email,
-                    UserName = oResult.UserId
+                    UserName = oResult.UserId,
+                    CreateDate = DateTime.Now,
+                    LastModifyDate = DateTime.Now,
+                    Role = Roles.User
                 };
 
                 user.Tokens.Add(new Token()
@@ -148,6 +151,7 @@ namespace Diploma.Repositories
                 });
 
                 await this.userManager.CreateAsync(user);
+
             }
 
             await this.signInManager.SignInAsync(user, false);
@@ -171,6 +175,7 @@ namespace Diploma.Repositories
                     Email = user.Email,
                     IsAuthorize = true,
                     IsBanned = user.IsBanned,
+                    Role = user.Role,
 
                     Addresses = user.Addresses.Select(a => new AddressViewModel()
                     {

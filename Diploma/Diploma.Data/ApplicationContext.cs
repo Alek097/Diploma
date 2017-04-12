@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using System;
+using System.Linq;
 
 namespace Diploma.Data
 {
@@ -91,6 +92,13 @@ namespace Diploma.Data
             }
 
             this.Entry(entity).State = EntityState.Added;
+        }
+
+        public bool RoleExists(string name)
+        {
+            IdentityRole role = this.Roles.FirstOrDefault(r => r.Name == name);
+
+            return !(role == null);
         }
     }
 }
