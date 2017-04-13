@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Threading.Tasks;
 
 namespace Diploma.Core.OAuthResults
 {
@@ -25,15 +26,18 @@ namespace Diploma.Core.OAuthResults
 
         public VkOAuthResult() { }
 
-        public OAuthResult ToOAuthResult()
+        public async Task<OAuthResult> ToOAuthResultAsync()
         {
-            return new OAuthResult()
+            return await Task.Run(() =>
             {
-                AccessToken = this.access_token,
-                Email = this.email,
-                UserId = this.user_id,
-                Provider = "Vk"
-            };
+                return new OAuthResult()
+                {
+                    AccessToken = this.access_token,
+                    Email = this.email,
+                    UserId = this.user_id,
+                    Provider = "Vk"
+                };
+            });
         }
     }
 }

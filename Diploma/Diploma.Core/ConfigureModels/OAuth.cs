@@ -18,10 +18,12 @@ namespace Diploma.Core.ConfigureModels
 
         public string GetAccessTokenUrl { get; set; }
 
-        public string GetAccessTokenParameters { get; set; }
+        public List<AccessTokenParameter> GetAccessTokenParameters { get; set; }
 
         public string Description { get; set; }
 
         public string LogoUrl { get; set; }
+
+        public string Parser { get; set; }
     }
 }

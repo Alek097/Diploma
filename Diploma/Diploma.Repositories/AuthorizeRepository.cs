@@ -14,6 +14,8 @@ using Diploma.Core.OAuthResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Diploma.Core;
+using System.Net.Http;
+using System.Reflection;
 
 namespace Diploma.Repositories
 {
@@ -103,33 +105,35 @@ namespace Diploma.Repositories
 
             string redirectUrl = $"{this.app.Domain}{url}";
 
-            string getAccessCodeUrl = $"{string.Format(provider.GetAccessTokenUrl, provider.ClientId, provider.ClientSecret, redirectUrl, code)}&{provider.GetAccessTokenParameters}";
+            HttpClient client = new HttpClient();
 
-            WebRequest getAccessCodeRequest = WebRequest.Create(getAccessCodeUrl);
-            WebResponse getAccessCodeResponce = await getAccessCodeRequest.GetResponseAsync();
-
-            string json;
-
-            using (Stream stream = getAccessCodeResponce.GetResponseStream())
+            Dictionary<string, string> parametrs = new Dictionary<string, string>()
             {
-                StreamReader streamReader = new StreamReader(stream);
+                { "client_id" , provider.ClientId },
+                { "client_secret" , provider.ClientSecret },
+                { "redirect_uri" , redirectUrl },
+                { "code" , code }
+            };
 
-                json = streamReader.ReadToEnd();
+            if (provider.GetAccessTokenParameters != null)
+            {
+                foreach (AccessTokenParameter param in provider.GetAccessTokenParameters)
+                {
+                    parametrs[param.Name] = param.Value;
+                }
             }
 
-            OAuthResult oResult = null;
+            string json = await client.PostAsync(provider.GetAccessTokenUrl,
+                new FormUrlEncodedContent(parametrs))
+                    .Result.Content.ReadAsStringAsync();
 
-            switch (provider.Name.ToUpper())
-            {
-                case "VK":
-                    oResult = new VkOAuthResult(json).ToOAuthResult();
-                    break;
+            Type parser = typeof(IOAuthResult).GetTypeInfo().Assembly.GetType(provider.Parser);
 
-                default:
-                    throw new InvalidOperationException($"Provider \"{provider.Name}\" not a found");
-            }
+            IOAuthResult resultMaker = Activator.CreateInstance(parser, json) as IOAuthResult;
 
-            User user = this.context.Users.FirstOrDefault(u => u.UserName == oResult.UserId);
+            OAuthResult oResult = await resultMaker.ToOAuthResultAsync();
+
+            User user = this.context.Users.FirstOrDefault(u => u.Email == oResult.Email);
 
             if (user == null)
             {
