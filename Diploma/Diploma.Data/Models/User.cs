@@ -3,39 +3,45 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
+using System.Linq;
+using Diploma.Core;
 
 namespace Diploma.Data.Models
 {
-    public class User : IdentityUser
+    public class User : IdentityUser, IAuditable
     {
-        public string LastName { get; set; }
-
-        public string FirstName { get; set; }
-
-        public string MiddleName { get; set; }
-
         [NotMapped]
-        public string FullName { get => $"{this.LastName} {this.FirstName} {this.MiddleName}"; }
+        public bool IsBanned
+        {
+            get
+            {
+                Ban lastBan = this.Bans.FirstOrDefault((b) => !(b.IsDeleted));
 
-        public string City { get; set; }
+                return lastBan != null;
+            }
+        }
 
-        public string Country { get; set; }
+        public Roles Role { get; set; }
 
-        public string Region { get; set; }
+        public DateTime? CreateDate { get; set; }
 
-        public string PostCode { get; set; }
+        public string CreateBy { get; set; }
 
-        public DateTime? BirthDate { get; set; }
+        public DateTime? LastModifyDate { get; set; }
 
-        public bool IsBanned { get; set; }
+        public string ModifyBy { get; set; }
 
         public virtual ICollection<Ban> Bans { get; set; }
         public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Token> Tokens { get; set; }
+        public virtual ICollection<Address> Addresses { get; set; }
 
         public User()
         {
             this.Bans = new List<Ban>();
             this.Orders = new List<Order>();
+            this.Tokens = new List<Token>();
+            this.Addresses = new List<Address>();
         }
 
     }

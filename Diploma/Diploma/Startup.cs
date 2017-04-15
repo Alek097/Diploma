@@ -14,6 +14,9 @@ using System.IO;
 using Diploma.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Diploma.Data;
+using Diploma.Repositories.Interfaces;
+using Diploma.Repositories;
+using Diploma.Core.ConfigureModels;
 
 namespace Diploma
 {
@@ -36,8 +39,17 @@ namespace Diploma
         {
             // Add framework services.
             services.AddMvc();
+
+            services.AddDbContext<ApplicationContext>();
+
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
+
+            services.AddTransient<IContext, ApplicationContext>();
+            services.AddTransient<IAuthorizeRepository, AuthorizeRepository>();
+
+            services.Configure<List<OAuth>>(this.Configuration.GetSection("OAuth"));
+            services.Configure<App>(this.Configuration.GetSection("App"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,13 +58,19 @@ namespace Diploma
             loggerFactory.AddNLog();
 
             app.AddNLogWeb();
-            app.UseMvc();
             app.UseIdentity();
+            app.UseMvc();
 
             app.UseStaticFiles(new StaticFileOptions()
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Bundles")),
                 RequestPath = "/Bundles"
+            });
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Assets")),
+                RequestPath = "/img"
             });
         }
     }
