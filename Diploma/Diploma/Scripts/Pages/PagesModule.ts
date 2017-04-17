@@ -1,4 +1,4 @@
-﻿import "./Authorize/AuthorizeModule";
+﻿import './Authorize/AuthorizeModule';
 
 angular.module('pages',
     [
