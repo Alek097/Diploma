@@ -45,6 +45,7 @@ export class MainController {
     public signOut(): void {
         this._mainService.signOut()
             .then(() => {
+                location.href = '/';
                 location.reload();
             });
     }
