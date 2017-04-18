@@ -51,7 +51,7 @@ namespace Diploma.Controllers
             {
                 this.logger.LogError(ex.Message, ex);
 
-                url = $"{this.app.Domain}#!/error/500/BadRequest";
+                url = $"{this.app.Domain}#!/error/500/Server error";
             }
 
             return this.Redirect(url);

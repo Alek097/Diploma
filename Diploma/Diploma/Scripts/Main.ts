@@ -1,22 +1,33 @@
 ﻿import { MainController } from './MainController';
 import { MainService } from './MainService';
 
-import "./Pages/PagesModule";
+import './Pages/PagesModule';
+import './Common/CommonModule';
 
-import authorizeTemplates from "./Pages/Authorize/AuthorizeView.html";
+import authorizeTemplate from './Pages/Authorize/AuthorizeView.html';
+import errorTemplate from './Pages/Error/ErrorView.html';
 
 angular.module('main',
     [
         'ngRoute',
         'ngAnimate',
-        'pages'
+        'pages',
+        'common'
     ])
     .config(($routeProvider: ng.route.IRouteProvider) => {
         $routeProvider.when('/authorize',
             <ng.route.IRoute>
             {
-                template: authorizeTemplates,
+                template: authorizeTemplate,
                 controller: 'authorizeController',
+                controllerAs: 'ctrl'
+            });
+
+        $routeProvider.when('/error/:status/:message',
+            <ng.route.IRoute>
+            {
+                template: errorTemplate,
+                controller: 'errorController',
                 controllerAs: 'ctrl'
             });
     })

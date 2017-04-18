@@ -8,7 +8,7 @@ using Diploma.Core;
 
 namespace Diploma.Data.Models
 {
-    public class User : IdentityUser, IAuditable
+    public class User : IdentityUser<Guid>, IAuditable
     {
         [NotMapped]
         public bool IsBanned
@@ -21,15 +21,13 @@ namespace Diploma.Data.Models
             }
         }
 
-        public Roles Role { get; set; }
-
         public DateTime? CreateDate { get; set; }
 
-        public string CreateBy { get; set; }
+        public Guid? CreateBy { get; set; }
 
         public DateTime? LastModifyDate { get; set; }
 
-        public string ModifyBy { get; set; }
+        public Guid? ModifyBy { get; set; }
 
         public virtual ICollection<Ban> Bans { get; set; }
         public virtual ICollection<Order> Orders { get; set; }

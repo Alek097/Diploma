@@ -1,6 +1,5 @@
 ﻿import { Order } from './Order';
 import { Address } from './Address'
-import { Roles } from './Roles'
 
 export class User {
     public email: string = null;
@@ -14,6 +13,4 @@ export class User {
     public orders: Order[] = [];
 
     public addresses: Address[] = [];
-
-    public role: Roles = Roles.User;
 }

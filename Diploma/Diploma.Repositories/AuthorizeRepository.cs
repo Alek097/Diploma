@@ -8,33 +8,72 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Diploma.Core.ViewModels;
-using System.Net;
-using System.IO;
 using Diploma.Core.OAuthResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Diploma.Core;
 using System.Net.Http;
 using System.Reflection;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Diploma.Repositories
 {
     public class AuthorizeRepository : IAuthorizeRepository
     {
+        private static bool isRoleCreated = false;
+
         private readonly IContext context;
         private readonly List<OAuth> oauth;
         private readonly App app;
         private readonly UserManager<User> userManager;
         private readonly SignInManager<User> signInManager;
+
         private const string url = "api/Authorize/SetCode";
 
-        public AuthorizeRepository(IContext context, IOptions<List<OAuth>> oauth, IOptions<App> app, UserManager<User> userManager, SignInManager<User> signInManager)
+        public AuthorizeRepository(
+            IContext context,
+            IOptions<List<OAuth>> oauth,
+            IOptions<App> app,
+            UserManager<User> userManager,
+            SignInManager<User> signInManager,
+            RoleManager<IdentityRole<Guid>> roleManager)
         {
             this.context = context;
             this.oauth = oauth.Value;
             this.app = app.Value;
             this.userManager = userManager;
             this.signInManager = signInManager;
+
+            if (!(isRoleCreated))
+            {
+                this.CreateRoles(roleManager);
+                isRoleCreated = true;
+            }
+        }
+
+        private void CreateRoles(RoleManager<IdentityRole<Guid>> roleManager)
+        {
+            Task waiter = this.CreateRolesAsync(roleManager);
+
+            waiter.Wait();
+        }
+
+        private async Task CreateRolesAsync(RoleManager<IdentityRole<Guid>> roleManager)
+        {
+            if (!(await roleManager.RoleExistsAsync("User")))
+            {
+                await roleManager.CreateAsync(new IdentityRole<Guid>("User"));
+            }
+
+            if (!(await roleManager.RoleExistsAsync("Moderator")))
+            {
+                await roleManager.CreateAsync(new IdentityRole<Guid>("Moderator"));
+            }
+
+            if (!(await roleManager.RoleExistsAsync("Administrator")))
+            {
+                await roleManager.CreateAsync(new IdentityRole<Guid>("Administrator"));
+            }
         }
 
         public void Dispose()
@@ -142,8 +181,7 @@ namespace Diploma.Repositories
                     Email = oResult.Email,
                     UserName = oResult.UserId,
                     CreateDate = DateTime.Now,
-                    LastModifyDate = DateTime.Now,
-                    Role = Roles.User
+                    LastModifyDate = DateTime.Now
                 };
 
                 user.Tokens.Add(new Token()
@@ -156,6 +194,7 @@ namespace Diploma.Repositories
 
                 await this.userManager.CreateAsync(user);
 
+                await this.userManager.AddToRoleAsync(user, "User");
             }
 
             await this.signInManager.SignInAsync(user, false);
@@ -171,7 +210,12 @@ namespace Diploma.Repositories
                 User user = this.context.Users
                 .Include(u => u.Addresses)
                 .Include(u => u.Orders)
+                .Include(u => u.Roles)
                 .First((u) => u.UserName == name);
+
+                Guid roleId = user.Roles.FirstOrDefault().RoleId;
+
+                IdentityRole<Guid> role = context.Roles.First(r => r.Id == roleId);
 
                 UserViewModel result = new UserViewModel()
                 {
@@ -179,7 +223,7 @@ namespace Diploma.Repositories
                     Email = user.Email,
                     IsAuthorize = true,
                     IsBanned = user.IsBanned,
-                    Role = user.Role,
+                    Role = role.Name,
 
                     Addresses = user.Addresses.Select(a => new AddressViewModel()
                     {
