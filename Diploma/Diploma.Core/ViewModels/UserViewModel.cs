@@ -14,7 +14,7 @@ namespace Diploma.Core.ViewModels
 
         public string UserName { get; set; }
 
-        public Roles Role { get; set; }
+        public string Role { get; set; }
 
         public ICollection<OrderViewModel> Orders { get; set; }
 

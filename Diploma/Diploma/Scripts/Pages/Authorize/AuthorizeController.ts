@@ -7,14 +7,12 @@ export class AuthorizeController {
     public static $inject: string[] =
     [
         'authorizeService',
-        'modalWindowService'
     ]
 
     public oauthProviders: OAuthProvider[] = [];
 
     constructor(
         private _authorizeService: AuthorizeService,
-        private _modalWindowService: ModalWindowService
     ) {
         this._authorizeService.getOAuthProviders()
             .then((data) => {

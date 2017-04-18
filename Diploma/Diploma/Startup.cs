@@ -17,6 +17,7 @@ using Diploma.Data;
 using Diploma.Repositories.Interfaces;
 using Diploma.Repositories;
 using Diploma.Core.ConfigureModels;
+using Microsoft.AspNetCore.Identity;
 
 namespace Diploma
 {
@@ -42,8 +43,9 @@ namespace Diploma
 
             services.AddDbContext<ApplicationContext>();
 
-            services.AddIdentity<User, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationContext>();
+            services.AddIdentity<User, IdentityRole<Guid>>()
+                .AddEntityFrameworkStores<ApplicationContext, Guid>()
+                .AddDefaultTokenProviders();
 
             services.AddTransient<IContext, ApplicationContext>();
             services.AddTransient<IAuthorizeRepository, AuthorizeRepository>();

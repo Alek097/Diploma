@@ -6,10 +6,11 @@ using Microsoft.Extensions.Options;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
 
 namespace Diploma.Data
 {
-    public class ApplicationContext : IdentityDbContext<User>, IContext
+    public class ApplicationContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>, IContext
     {
         private readonly App app;
 
@@ -92,13 +93,6 @@ namespace Diploma.Data
             }
 
             this.Entry(entity).State = EntityState.Added;
-        }
-
-        public bool RoleExists(string name)
-        {
-            IdentityRole role = this.Roles.FirstOrDefault(r => r.Name == name);
-
-            return !(role == null);
         }
     }
 }

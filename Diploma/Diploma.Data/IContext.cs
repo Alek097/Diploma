@@ -26,6 +26,8 @@ namespace Diploma.Data
 
         DbSet<Token> Tokens { get; set; }
 
+        DbSet<IdentityRole<Guid>> Roles { get; set; }
+
         Task<int> SaveChangesAsync();
 
         int SaveChanges();
@@ -35,7 +37,5 @@ namespace Diploma.Data
         void Edit<TEntity>(TEntity entity, User editBy = null) where TEntity : class;
 
         void Create<TEntity, TId>(TEntity entity, User createBy = null) where TEntity : class, IBaseEntity<TId>;
-
-        bool RoleExists(string name);
     }
 }
