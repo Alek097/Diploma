@@ -21,6 +21,8 @@ namespace Diploma.Data.Models
             }
         }
 
+        public string ActiveEmail { get; set; }
+
         public DateTime? CreateDate { get; set; }
 
         public Guid? CreateBy { get; set; }

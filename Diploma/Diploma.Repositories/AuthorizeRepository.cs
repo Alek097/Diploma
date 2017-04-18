@@ -179,6 +179,7 @@ namespace Diploma.Repositories
                 user = new User()
                 {
                     Email = oResult.Email,
+                    ActiveEmail = oResult.Email,
                     UserName = oResult.UserId,
                     CreateDate = DateTime.Now,
                     LastModifyDate = DateTime.Now
@@ -202,16 +203,28 @@ namespace Diploma.Repositories
             return $"/";
         }
 
-        public async Task<UserViewModel> GetUser(string name)
+        public async Task<ControllerResult<UserViewModel>> GetUser(string name)
         {
-            return await Task.Run(() =>
+            return await Task.Run<ControllerResult<UserViewModel>>(() =>
             {
 
                 User user = this.context.Users
-                .Include(u => u.Addresses)
-                .Include(u => u.Orders)
-                .Include(u => u.Roles)
-                .First((u) => u.UserName == name);
+                    .Include(u => u.Addresses)
+                    .Include(u => u.Orders)
+                    .Include(u => u.Roles)
+                    .FirstOrDefault((u) => u.UserName == name);
+
+                if (user == null)
+                {
+                    return new ControllerResult<UserViewModel>()
+                    {
+                        IsSuccess = false,
+                        Message = $"User not a found",
+                        Status = 404,
+                        Value = new UserViewModel() { IsAuthorize = false }
+                    };
+                }
+
 
                 Guid roleId = user.Roles.FirstOrDefault().RoleId;
 
@@ -220,7 +233,7 @@ namespace Diploma.Repositories
                 UserViewModel result = new UserViewModel()
                 {
                     UserName = user.UserName,
-                    Email = user.Email,
+                    Email = user.ActiveEmail,
                     IsAuthorize = true,
                     IsBanned = user.IsBanned,
                     Role = role.Name,
@@ -272,7 +285,12 @@ namespace Diploma.Repositories
                     }).ToList()
                 };
 
-                return result;
+                return new ControllerResult<UserViewModel>()
+                {
+                    IsSuccess = true,
+                    Status = 200,
+                    Value = result
+                };
             });
         }
 

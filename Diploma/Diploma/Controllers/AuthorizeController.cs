@@ -7,6 +7,7 @@ using Diploma.Core.ViewModels;
 using Microsoft.Extensions.Logging;
 using Diploma.Core.ConfigureModels;
 using Microsoft.Extensions.Options;
+using Diploma.Core;
 
 namespace Diploma.Controllers
 {
@@ -49,7 +50,7 @@ namespace Diploma.Controllers
             }
             catch (Exception ex)
             {
-                this.logger.LogError(ex.Message, ex);
+                this.logger.LogError(new EventId(), ex, ex.Message);
 
                 url = $"{this.app.Domain}#!/error/500/Server error";
             }
@@ -58,9 +59,31 @@ namespace Diploma.Controllers
         }
 
         [HttpGet]
-        public async Task<UserViewModel> GetUser()
+        public async Task<ControllerResult<UserViewModel>> GetUser()
         {
-            return User.Identity.IsAuthenticated ? await this.repository.GetUser(User.Identity.Name) : new UserViewModel() { IsAuthorize = false };
+            try
+            {
+                return User.Identity.IsAuthenticated ?
+                    await this.repository.GetUser(User.Identity.Name) :
+                    new ControllerResult<UserViewModel>()
+                    {
+                        IsSuccess = true,
+                        Status = 200,
+                        Value = new UserViewModel() { IsAuthorize = false }
+                    };
+            }
+            catch (Exception ex)
+            {
+                this.logger.LogError(new EventId(), ex, "Unknown error");
+
+                return new ControllerResult<UserViewModel>()
+                {
+                    IsSuccess = false,
+                    Message = "Unlnown server error",
+                    Status = 500,
+                    Value = new UserViewModel() { IsAuthorize = false }
+                };
+            }
         }
 
         [HttpGet]

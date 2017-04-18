@@ -1,6 +1,8 @@
-﻿import './ModalWindow/ModalWindowModule'
+﻿import './ModalWindow/ModalWindowModule';
+import './ErrorModal/ErrorModalModule';
 
 angular.module('common',
     [
-        'modalWindow'
+        'modalWindow',
+        'errorModal'
     ]);

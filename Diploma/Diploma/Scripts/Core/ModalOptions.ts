@@ -2,5 +2,5 @@
     template: string;
     controller: string;
     controllerAs: string;
-    inject: Object
+    inject: any
 }
