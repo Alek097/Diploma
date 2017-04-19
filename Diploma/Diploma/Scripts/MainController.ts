@@ -3,8 +3,7 @@ import { User } from './Common/Models/User';
 import { Global } from './Core/Global';
 import { ModalWindowService } from './Common/ModalWindow/ModalWindowService';
 import { ModalOptions } from './Core/ModalOptions';
-
-import errorModalTemplate from './Common/ErrorModal/ErrorModalView.html';
+import { ErrorModalService } from './Common/ErrorModal/ErrorModalService';
 
 export class MainController {
 
@@ -13,12 +12,14 @@ export class MainController {
     public static $inject: string[] =
     [
         'mainService',
-        'modalWindowService'
+        'modalWindowService',
+        'errorModalService'
     ]
 
     constructor(
         private _mainService: MainService,
-        private _modalWindowService: ModalWindowService
+        private _modalWindowService: ModalWindowService,
+        errorModalService: ErrorModalService
     ) {
         this._mainService.getUser()
             .then((responce) => {
@@ -26,19 +27,11 @@ export class MainController {
                 Global.user = this.user;
 
                 if (!(responce.data.isSuccess)) {
-
-                    this._modalWindowService.show(
-                        <ModalOptions>
-                        {
-                            controller: 'errorModalController',
-                            template: errorModalTemplate,
-                            inject: {
-                                status: responce.data.status,
-                                message: responce.data.message
-                            }
-                        }
-                    );
+                    errorModalService.show(responce.data.status, responce.data.message);
                 }
+            },
+            () => {
+                errorModalService.show(500, 'Ошибка сервера. Повторите попытку позже.');
             });
     }
 

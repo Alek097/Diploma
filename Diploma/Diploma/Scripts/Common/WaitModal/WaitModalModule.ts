@@ -1,6 +1,6 @@
 ﻿import { WaitModalService } from './WaitModalService';
 
-angular.module('waitModule',
+angular.module('waitModal',
     [
     ])
     .service('waitModalService', WaitModalService);
