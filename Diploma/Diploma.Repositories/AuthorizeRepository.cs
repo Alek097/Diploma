@@ -233,7 +233,8 @@ namespace Diploma.Repositories
                 UserViewModel result = new UserViewModel()
                 {
                     UserName = user.UserName,
-                    Email = user.ActiveEmail,
+                    Email = user.Email,
+                    ActiveEmail = user.ActiveEmail,
                     IsAuthorize = true,
                     IsBanned = user.IsBanned,
                     Role = role.Name,

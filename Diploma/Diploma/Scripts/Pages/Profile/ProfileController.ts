@@ -32,10 +32,14 @@ export class ProfileController {
                 else {
                     location.href = '/';
                 }
+
+                waitModalService.close();
             },
             () => {
                 this._errorModalService.show(500, 'Ошибка сервера. Повторите попытку позже.');
                 location.href = '/';
+
+                waitModalService.close();
             });
     }
 }

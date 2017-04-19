@@ -14,7 +14,7 @@ export class ModalWindowService {
         this._insertElement = angular.element('#modalWindow>.modal-dialog');
     }
 
-    public show(options: ModalOptions) : void {
+    public show(options: ModalOptions): void {
         let template: string = null;
 
         if (options.controller != null) {
@@ -28,7 +28,7 @@ export class ModalWindowService {
 
         angular.element(document).ready(function () {
             var $div = $(template);
-            
+
             $(insertElement).append($div);
 
             angular.element(document).injector().invoke(function ($compile) {
@@ -47,8 +47,9 @@ export class ModalWindowService {
         this._modal.modal('show');
     }
 
-    public close(): void
-    {
-        this._modal.modal('hide');
+    public close(): void {
+        setTimeout(() => {
+            this._modal.modal('hide');
+        }, 500);
     }
 }
