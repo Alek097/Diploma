@@ -1,24 +1,61 @@
-﻿<div class="container-fluid" id="profile">
-    <div class="row">
-        <div class="d-table col-12 col-sm-4 col-md-3 col-xl-2">
-            <div class="d-table-cell align-middle">
-                <p class="h5">Активная почта: </p>
+﻿<div class="container-fluid mt-1" id="profile">
+    <div id="profile--system_info" class="d-flex justify-content-around flex-wrap">
+
+        <div class="card card-outline-primary text-center mr-sm-1 mb-2">
+            <div class="card-header card-primary text-white">
+                <span class="card-title">Активная почта <sup ng-show="ctrl.oldUser.activeEmail != ctrl.newUser.activeEmail">*</sup></span>
+            </div>
+            <div class="card-block">
+                <span class="card-text">
+                    На активную почту приходят оповещания о ваших покупках, новости и прочее.
+                </span>
+                <hr />
+                <div class="card-text" title="{{ctrl.newUser.activeEmail}}">
+                    <div>
+                        <span ng-show="activeEmailForm.activeEmailInput.$valid">{{newActiveEmail}}</span>
+                        <span class="h4" ng-show="activeEmailForm.activeEmailInput.$invalid || newActiveEmail == ''">Неверный формат</span>
+                    </div>
+
+                    <form name="activeEmailForm" ng-show="ctrl.isEditActiveEmail">
+                        <hr />
+                        <input name="activeEmailInput" ng-model="newActiveEmail"
+                               type="email"
+                               class="form-control"
+                               ng-class="{inputValidSucces: activeEmailForm.activeEmailInput.$valid && newActiveEmail != '', inputValidError: activeEmailForm.activeEmailInput.$invalid || newActiveEmail == ''}" />
+                    </form>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div ng-show="!(ctrl.isEditActiveEmail)">
+                    <button class="btn btn-outline-primary btn-block" ng-click="ctrl.isEditActiveEmail = true;">
+                        <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <div class="row" ng-show="ctrl.isEditActiveEmail">
+                    <div class="col">
+                        <button ng-disabled="activeEmailForm.activeEmailInput.$invalid || newActiveEmail == ''"
+                                class="btn btn-outline-success btn-block"
+                                ng-click="ctrl.acceptEditActiveEmail(newActiveEmail)">
+                            <i class="fa fa-check-circle fa-2x" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="col">
+                        <button class="btn btn-outline-danger btn-block" ng-click="newActiveEmail = ctrl.dismissEditActiveEmail()">
+                            <i class="fa fa-times-circle fa-2x" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <div class="d-table col-9 col-sm-6 col-md-auto" id="profile--active-email">
-            <div class="d-table-cell align-middle">
-                <p class="h6">{{ctrl.user.activeEmail}}</p>
-            </div>
-        </div>
-
-        <div class="d-table col-3 col-sm-2 col-md-1">
-            <div class="d-table-cell align-middle">
-                <button class="btn btn-outline-primary">
-                    <i class="fa fa-pencil-square-o fa-2" aria-hidden="true"></i>
-                </button>
-            </div>
-        </div>
     </div>
     <hr />
+    <div ng-show="ctrl.isEditProfile">
+        <div class="d-flex justify-content-end align-items-center flex-wrap">
+            <button class="btn btn-success mr-1">Изменить</button>
+            <button class="btn btn-danger" ng-click="ctrl.dismissEditProfile()">Отменить</button>
+        </div>
+        <hr />
+    </div>
 </div>

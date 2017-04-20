@@ -1,4 +1,8 @@
-﻿body {
+﻿@primaryColor: #0275d8;
+@successColor: #5cb85c;
+@dangerColor: #d9534f;
+
+body {
 }
 
 #authorize {
@@ -54,24 +58,72 @@
 }
 
 #profile {
-    .row {
-        margin-top: 5px;
-    }
+    #profile--system_info {
+        .card {
+            padding-right: 0px;
+            padding-left: 0px;
+            max-width: 290px;
+            border-bottom: 0px;
 
-    .d-table {
-        height: 38px;
-    }
 
-    #profile--active-email {
-        div {
-            p {
-                max-width: 227px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-                height: 20px;
-                margin: 0px;
+            .card-footer {
+                padding: 0px;
+                transition-property: height;
+
+                .btn-block {
+                    border-top-left-radius: 0px;
+                    border-top-right-radius: 0px;
+                    border-right: 0px;
+                    border-left: 0px;
+                    border-bottom-color: @primaryColor;
+                    padding-bottom: 3px;
+                    padding-top: 3px;
+                }
+
+                .row {
+                    width: 100%;
+                    margin: 0px;
+
+                    .col {
+                        padding: 0px;
+
+                        &:nth-child(1) {
+                            .btn-block {
+                                border-bottom-right-radius: 0px;
+                                border-right: solid 1px;
+                                border-right-color: @primaryColor;
+                                padding-right: 15px;
+                            }
+                        }
+
+                        &:nth-child(2) {
+                            .btn-block {
+                                border-bottom-left-radius: 0px;
+                            }
+                        }
+                    }
+                }
             }
         }
     }
+
+    #profile--active_email {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}
+
+.inputValidSucces {
+    background-color: @successColor;
+    color: white;
+}
+
+.inputValidError {
+    background-color: @dangerColor;
+}
+
+.inputValidError, .inputValidSucces {
+    transition-property: background-color;
+    color: white;
 }
