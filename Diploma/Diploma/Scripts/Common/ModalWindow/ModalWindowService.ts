@@ -29,7 +29,7 @@ export class ModalWindowService {
         angular.element(document).ready(function () {
             var $div = $(template);
 
-            $(insertElement).append($div);
+            $(insertElement).html(<any>$div);
 
             angular.element(document).injector().invoke(function ($compile) {
                 var scope = angular.element($div).scope();
