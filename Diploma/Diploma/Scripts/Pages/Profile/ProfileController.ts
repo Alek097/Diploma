@@ -3,6 +3,8 @@ import { User } from '../../Common/Models/User';
 import { MainService } from '../../MainService';
 import { WaitModalService } from '../../Common/WaitModal/WaitModalService';
 import { ErrorModalService } from '../../Common/ErrorModal/ErrorModalService';
+import { MessageModalService } from '../../Common/MessageModal/MessageModalService';
+import { Button, ButtonType } from '../../Core/Button';
 
 export class ProfileController {
     public static $inject: string[] =
@@ -11,7 +13,8 @@ export class ProfileController {
         'mainService',
         'waitModalService',
         'errorModalService',
-        '$scope'
+        '$scope',
+        'messageModalService'
     ];
 
     public oldUser: User;
@@ -26,7 +29,8 @@ export class ProfileController {
         mainService: MainService,
         waitModalService: WaitModalService,
         private _errorModalService: ErrorModalService,
-        private scope: ng.IScope
+        private _scope: ng.IScope,
+        private _messageModalService: MessageModalService
     ) {
         waitModalService.show();
 
@@ -38,7 +42,7 @@ export class ProfileController {
 
                     this._automapUser();
 
-                    this._setScope(scope);
+                    this._setScope(this._scope);
                 }
                 else {
                     location.href = '/';
@@ -67,11 +71,29 @@ export class ProfileController {
         this.isEditActiveEmail = false;
     }
 
-    public dismissEditProfile() {
+    public dismissEditProfile(): void {
         this.isEditProfile = false;
 
         this._automapUser();
-        this._setScope(this.scope);
+        this._setScope(this._scope);
+    }
+
+    public acceptEditProfile(): void {
+        this._messageModalService.show('Изменение данных профиля приведут к перезагрузке страницы.', 'Вы уверены?',
+            [
+                new Button(
+                    'Принять',
+                    () => {
+                        return true;
+                    },
+                    ButtonType.success),
+                new Button(
+                    'Отклонить',
+                    () => {
+                        return true;
+                    },
+                    ButtonType.danger)
+            ]);
     }
 
     private _isEditedProfile(): void {

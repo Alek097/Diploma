@@ -1,4 +1,4 @@
-﻿import { EmailEditType } from '../../Core/EmailEditType';
+﻿import { User } from '../../Common/Models/User';
 
 export class ProfileService {
     public static $inject: string[] =
@@ -12,11 +12,10 @@ export class ProfileService {
 
     }
 
-    public editEmail(email: string, editType: EmailEditType): ng.IHttpPromise<boolean> {
-        return this._http.post('api/Profile/EditEmail',
+    public edit(user: User): ng.IHttpPromise<boolean> {
+        return this._http.post('api/Profile/Edit',
             {
-                email: email,
-                editType: editType
+                user: user
             });
     }
 }
