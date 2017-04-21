@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -17,7 +15,6 @@ using Diploma.Data;
 using Diploma.Repositories.Interfaces;
 using Diploma.Repositories;
 using Diploma.Core.ConfigureModels;
-using Microsoft.AspNetCore.Identity;
 
 namespace Diploma
 {

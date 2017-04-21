@@ -8,11 +8,13 @@ using Microsoft.Extensions.Logging;
 using Diploma.Core.ConfigureModels;
 using Microsoft.Extensions.Options;
 using Diploma.Core;
+using Diploma.Filters;
 
 namespace Diploma.Controllers
 {
     [Produces("application/json")]
     [Route("api/Authorize/[action]")]
+    [TypeFilter(typeof(ExceptionFilterAttribute))]
     public class AuthorizeController : Controller
     {
         private readonly IAuthorizeRepository repository;
@@ -40,50 +42,25 @@ namespace Diploma.Controllers
         }
 
         [HttpGet]
+        [TypeFilter(typeof(RedirectExceptionFilterAttribute))]
         public async Task<RedirectResult> SetCode(string code, string state)
         {
-            string url = null;
-
-            try
-            {
-                url = await this.repository.SetAccessCode(code, state);
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(new EventId(), ex, ex.Message);
-
-                url = $"{this.app.Domain}#!/error/500/Server error";
-            }
-
+            string url = await this.repository.SetAccessCode(code, state);
             return this.Redirect(url);
         }
 
         [HttpGet]
         public async Task<ControllerResult<UserViewModel>> GetUser()
         {
-            try
-            {
-                return User.Identity.IsAuthenticated ?
-                    await this.repository.GetUser(User.Identity.Name) :
-                    new ControllerResult<UserViewModel>()
-                    {
-                        IsSuccess = true,
-                        Status = 200,
-                        Value = new UserViewModel() { IsAuthorize = false }
-                    };
-            }
-            catch (Exception ex)
-            {
-                this.logger.LogError(new EventId(), ex, "Unknown error");
-
-                return new ControllerResult<UserViewModel>()
+            return User.Identity.IsAuthenticated ?
+                await this.repository.GetUser(User.Identity.Name) :
+                new ControllerResult<UserViewModel>()
                 {
-                    IsSuccess = false,
-                    Message = "Unlnown server error",
-                    Status = 500,
+                    IsSuccess = true,
+                    Status = 200,
                     Value = new UserViewModel() { IsAuthorize = false }
                 };
-            }
+
         }
 
         [HttpGet]
