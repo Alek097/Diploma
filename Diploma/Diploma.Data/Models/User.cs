@@ -2,13 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 using System.Linq;
-using Diploma.Core;
 
 namespace Diploma.Data.Models
 {
-    public class User : IdentityUser<Guid>, IAuditable
+    public class User : IdentityUser<Guid>, IAuditable, IBaseEntity<Guid>
     {
         [NotMapped]
         public bool IsBanned
@@ -20,8 +18,6 @@ namespace Diploma.Data.Models
                 return lastBan != null;
             }
         }
-
-        public string ActiveEmail { get; set; }
 
         public DateTime? CreateDate { get; set; }
 

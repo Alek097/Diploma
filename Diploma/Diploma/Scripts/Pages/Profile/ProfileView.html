@@ -3,22 +3,22 @@
 
         <div class="card card-outline-primary text-center mr-sm-1 mb-2">
             <div class="card-header card-primary text-white">
-                <span class="card-title">Активная почта <sup ng-show="ctrl.oldUser.activeEmail != ctrl.newUser.activeEmail">*</sup></span>
+                <span class="card-title">Электронная почта <sup ng-show="ctrl.oldUser.email != ctrl.newUser.email">*</sup></span>
             </div>
             <div class="card-block">
                 <span class="card-text">
                     На активную почту приходят оповещания о ваших покупках, новости и прочее.
                 </span>
                 <hr />
-                <div class="card-text" title="{{ctrl.newUser.activeEmail}}">
+                <div class="card-text" title="{{ctrl.newUser.email}}">
                     <div>
-                        <span ng-show="activeEmailForm.activeEmailInput.$valid">{{newActiveEmail}}</span>
-                        <span class="h4" ng-show="activeEmailForm.activeEmailInput.$invalid || newActiveEmail == ''">Неверный формат</span>
+                        <span ng-show="emailForm.emailInput.$valid">{{newEmail}}</span>
+                        <span class="h4" ng-show="emailForm.emailInput.$invalid || newEmail == ''">Неверный формат</span>
                     </div>
 
-                    <form name="activeEmailForm" ng-show="ctrl.isEditActiveEmail">
+                    <form name="emailForm" ng-show="ctrl.isEditEmail">
                         <hr />
-                        <input name="activeEmailInput" ng-model="newActiveEmail"
+                        <input name="emailInput" ng-model="newActiveEmail"
                                type="email"
                                class="form-control"
                                ng-class="{inputValidSucces: activeEmailForm.activeEmailInput.$valid && newActiveEmail != '', inputValidError: activeEmailForm.activeEmailInput.$invalid || newActiveEmail == ''}" />

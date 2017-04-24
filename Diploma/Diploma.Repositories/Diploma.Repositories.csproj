@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Diploma.Core\Diploma.Core.csproj" />
     <ProjectReference Include="..\Diploma.Data\Diploma.Data.csproj" />
   </ItemGroup>
 

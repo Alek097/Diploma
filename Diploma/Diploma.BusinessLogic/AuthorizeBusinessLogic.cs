@@ -1,28 +1,31 @@
-﻿using Diploma.Core.ConfigureModels;
+﻿using Diploma.BusinessLogic.Interfaces;
+using Diploma.Core;
+using Diploma.Core.ConfigureModels;
+using Diploma.Core.OAuthResults;
+using Diploma.Core.ViewModels;
 using Diploma.Data;
 using Diploma.Data.Models;
 using Diploma.Repositories.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Diploma.Core.ViewModels;
-using Diploma.Core.OAuthResults;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Diploma.Core;
 using System.Net.Http;
 using System.Reflection;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using System.Threading.Tasks;
 
-namespace Diploma.Repositories
+namespace Diploma.BusinessLogic
 {
-    public class AuthorizeRepository : IAuthorizeRepository
+    public class AuthorizeBusinessLogic : IAuthorizeBusinessLogic
     {
         private static bool isRoleCreated = false;
 
-        private readonly IContext context;
+        private readonly IUserRepository userRepository;
+        private readonly IOAuthStateRepository oauthStateRepository;
+        private readonly IRoleRepository roleRepository;
         private readonly List<OAuth> oauth;
         private readonly App app;
         private readonly UserManager<User> userManager;
@@ -30,15 +33,19 @@ namespace Diploma.Repositories
 
         private const string url = "api/Authorize/SetCode";
 
-        public AuthorizeRepository(
-            IContext context,
+        public AuthorizeBusinessLogic(
+            IUserRepository userRepository,
+            IOAuthStateRepository oauthStateRepository,
+            IRoleRepository roleRepository,
             IOptions<List<OAuth>> oauth,
             IOptions<App> app,
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            RoleManager<IdentityRole<Guid>> roleManager)
+            RoleManager<Role> roleManager)
         {
-            this.context = context;
+            this.userRepository = userRepository;
+            this.oauthStateRepository = oauthStateRepository;
+            this.roleRepository = roleRepository;
             this.oauth = oauth.Value;
             this.app = app.Value;
             this.userManager = userManager;
@@ -51,34 +58,34 @@ namespace Diploma.Repositories
             }
         }
 
-        private void CreateRoles(RoleManager<IdentityRole<Guid>> roleManager)
+        private void CreateRoles(RoleManager<Role> roleManager)
         {
             Task waiter = this.CreateRolesAsync(roleManager);
 
             waiter.Wait();
         }
 
-        private async Task CreateRolesAsync(RoleManager<IdentityRole<Guid>> roleManager)
+        private async Task CreateRolesAsync(RoleManager<Role> roleManager)
         {
             if (!(await roleManager.RoleExistsAsync("User")))
             {
-                await roleManager.CreateAsync(new IdentityRole<Guid>("User"));
+                await roleManager.CreateAsync(new Role("User"));
             }
 
             if (!(await roleManager.RoleExistsAsync("Moderator")))
             {
-                await roleManager.CreateAsync(new IdentityRole<Guid>("Moderator"));
+                await roleManager.CreateAsync(new Role("Moderator"));
             }
 
             if (!(await roleManager.RoleExistsAsync("Administrator")))
             {
-                await roleManager.CreateAsync(new IdentityRole<Guid>("Administrator"));
+                await roleManager.CreateAsync(new Role("Administrator"));
             }
         }
 
         public void Dispose()
         {
-            this.context.Dispose();
+            this.userRepository.Dispose();
         }
 
         public async Task<List<OAuthViewModel>> GetOAuthProviders()
@@ -103,13 +110,13 @@ namespace Diploma.Repositories
 
             string redirectUrl = $"{this.app.Domain}{url}";
 
-            this.context.Create<OAuthState, Guid>(new OAuthState()
+            this.oauthStateRepository.Add(new OAuthState()
             {
                 State = state,
                 Provider = provider
             });
 
-            await this.context.SaveChangesAsync();
+            await this.oauthStateRepository.SaveChangesAsync();
 
             return $"{string.Format(OAuth.GetCodeUrl, OAuth.ClientId, redirectUrl)}&{OAuth.GetCodeParameters}&state={state}";
         }
@@ -129,7 +136,7 @@ namespace Diploma.Repositories
 
             try
             {
-                stateEntity = this.context.OAuthStates.First((s) => s.State == state);
+                stateEntity = this.oauthStateRepository.Get().First((s) => s.State == state);
             }
             catch (InvalidOperationException ex)
             {
@@ -138,9 +145,9 @@ namespace Diploma.Repositories
 
             OAuth provider = this.oauth.FirstOrDefault((p) => p.Name.ToUpper() == stateEntity.Provider.ToUpper());
 
-            this.context.Delete(stateEntity);
+            this.oauthStateRepository.Delete(stateEntity);
 
-            await this.context.SaveChangesAsync();
+            await this.oauthStateRepository.SaveChangesAsync();
 
             string redirectUrl = $"{this.app.Domain}{url}";
 
@@ -172,14 +179,13 @@ namespace Diploma.Repositories
 
             OAuthResult oResult = await resultMaker.ToOAuthResultAsync();
 
-            User user = this.context.Users.FirstOrDefault(u => u.Email == oResult.Email);
+            User user = this.userRepository.Get().FirstOrDefault(u => u.UserName == oResult.UserId);
 
             if (user == null)
             {
                 user = new User()
                 {
                     Email = oResult.Email,
-                    ActiveEmail = oResult.Email,
                     UserName = oResult.UserId,
                     CreateDate = DateTime.Now,
                     LastModifyDate = DateTime.Now
@@ -208,10 +214,8 @@ namespace Diploma.Repositories
             return await Task.Run<ControllerResult<UserViewModel>>(() =>
             {
 
-                User user = this.context.Users
-                    .Include(u => u.Addresses)
-                    .Include(u => u.Orders)
-                    .Include(u => u.Roles)
+                User user = this.userRepository
+                    .Get()
                     .FirstOrDefault((u) => u.UserName == name);
 
                 if (user == null)
@@ -228,13 +232,12 @@ namespace Diploma.Repositories
 
                 Guid roleId = user.Roles.FirstOrDefault().RoleId;
 
-                IdentityRole<Guid> role = context.Roles.First(r => r.Id == roleId);
+                IdentityRole<Guid> role = this.roleRepository.Get(roleId);
 
                 UserViewModel result = new UserViewModel()
                 {
                     UserName = user.UserName,
                     Email = user.Email,
-                    ActiveEmail = user.ActiveEmail,
                     IsAuthorize = true,
                     IsBanned = user.IsBanned,
                     Role = role.Name,

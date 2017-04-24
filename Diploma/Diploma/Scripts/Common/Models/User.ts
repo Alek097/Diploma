@@ -4,8 +4,6 @@ import { Address } from './Address'
 export class User {
     public email: string = null;
 
-    public activeEmail: string = null;
-
     public userName: string = null;
 
     public isBanned: boolean = false;

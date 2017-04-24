@@ -12,9 +12,11 @@ using System.IO;
 using Diploma.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Diploma.Data;
-using Diploma.Repositories.Interfaces;
 using Diploma.Repositories;
 using Diploma.Core.ConfigureModels;
+using Diploma.Repositories.Interfaces;
+using Diploma.BusinessLogic.Interfaces;
+using Diploma.BusinessLogic;
 
 namespace Diploma
 {
@@ -40,12 +42,24 @@ namespace Diploma
 
             services.AddDbContext<ApplicationContext>();
 
-            services.AddIdentity<User, IdentityRole<Guid>>()
+            services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<ApplicationContext, Guid>()
                 .AddDefaultTokenProviders();
 
             services.AddTransient<IContext, ApplicationContext>();
-            services.AddTransient<IAuthorizeRepository, AuthorizeRepository>();
+            services.AddTransient<IAddressRepository, AddressRepository>();
+            services.AddTransient<IBanRepository, BanRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<ICharacteristicRepository, CharacteristicRepository>();
+            services.AddTransient<ICharacteristicsGroupRepository, CharacteristicsGroupRepository>();
+            services.AddTransient<IOAuthStateRepository, OAuthStateRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<ITokenRepository, TokenRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IRoleRepository, RoleRepository>();
+
+            services.AddTransient<IAuthorizeBusinessLogic, AuthorizeBusinessLogic>();
 
             services.Configure<List<OAuth>>(this.Configuration.GetSection("OAuth"));
             services.Configure<App>(this.Configuration.GetSection("App"));

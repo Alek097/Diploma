@@ -61,11 +61,11 @@ export class ProfileController {
     public dismissEditActiveEmail(): string {
         this.isEditActiveEmail = false;
 
-        return this.newUser.activeEmail;
+        return this.newUser.email;
     }
 
     public acceptEditActiveEmail(newActiveEmail: string): void {
-        this.newUser.activeEmail = newActiveEmail;
+        this.newUser.email = newActiveEmail;
 
         this._isEditedProfile();
         this.isEditActiveEmail = false;
@@ -113,7 +113,6 @@ export class ProfileController {
     }
 
     private _setScope(scope: any): void {
-        scope.newActiveEmail = this.oldUser.activeEmail;
         scope.newEmail = this.oldUser.email;
     }
 
