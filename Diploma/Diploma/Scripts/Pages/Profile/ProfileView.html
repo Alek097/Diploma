@@ -5,45 +5,73 @@
             <div class="card-header card-primary text-white">
                 <span class="card-title">Электронная почта <sup ng-show="ctrl.oldUser.email != ctrl.newUser.email">*</sup></span>
             </div>
-            <div class="card-block">
-                <span class="card-text">
-                    На активную почту приходят оповещания о ваших покупках, новости и прочее.
-                </span>
-                <hr />
-                <div class="card-text" title="{{ctrl.newUser.email}}">
-                    <div>
-                        <span ng-show="emailForm.emailInput.$valid">{{newEmail}}</span>
-                        <span class="h4" ng-show="emailForm.emailInput.$invalid || newEmail == ''">Неверный формат</span>
+            <div ng-show="!(ctrl.showConfirmCard)">
+                <div class="card-block">
+                    <span class="card-text">
+                        На электронную почту приходят оповещания о ваших покупках, новости и прочее.
+                    </span>
+                    <hr />
+                    <div class="card-text" title="{{ctrl.newUser.email}}">
+                        <div>
+                            <span ng-show="emailForm.emailInput.$valid">{{newEmail}}</span>
+                            <span class="h4" ng-show="emailForm.emailInput.$invalid || newEmail == ''">Неверный формат</span>
+                        </div>
+
+                        <form name="emailForm" ng-show="ctrl.isEditEmail">
+                            <hr />
+                            <input name="emailInput" ng-model="newEmail"
+                                   type="email"
+                                   class="form-control"
+                                   ng-class="{inputValidSucces: emailForm.emailInput.$valid && newEmail != '', inputValidError: emailForm.emailInput.$invalid || newEmail == ''}" />
+                        </form>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <div ng-show="!(ctrl.isEditEmail)">
+                        <button class="btn btn-outline-primary btn-block" ng-click="ctrl.isEditEmail = true;">
+                            <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+                        </button>
                     </div>
 
-                    <form name="emailForm" ng-show="ctrl.isEditEmail">
-                        <hr />
-                        <input name="emailInput" ng-model="newActiveEmail"
-                               type="email"
-                               class="form-control"
-                               ng-class="{inputValidSucces: activeEmailForm.activeEmailInput.$valid && newActiveEmail != '', inputValidError: activeEmailForm.activeEmailInput.$invalid || newActiveEmail == ''}" />
-                    </form>
+                    <div class="row" ng-show="ctrl.isEditEmail">
+                        <div class="col">
+                            <button ng-disabled="emailForm.emailInput.$invalid || newEmail == ''"
+                                    class="btn btn-outline-success btn-block"
+                                    ng-click="ctrl.acceptSendEditEmailConfirmMessage(newEmail)">
+                                <i class="fa fa-check-circle fa-2x" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-outline-danger btn-block" ng-click="ctrl.dismissSendEditEmailConfirmMessage()">
+                                <i class="fa fa-times-circle fa-2x" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="card-footer">
-                <div ng-show="!(ctrl.isEditActiveEmail)">
-                    <button class="btn btn-outline-primary btn-block" ng-click="ctrl.isEditActiveEmail = true;">
-                        <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
-                    </button>
-                </div>
 
-                <div class="row" ng-show="ctrl.isEditActiveEmail">
-                    <div class="col">
-                        <button ng-disabled="activeEmailForm.activeEmailInput.$invalid || newActiveEmail == ''"
-                                class="btn btn-outline-success btn-block"
-                                ng-click="ctrl.acceptEditActiveEmail(newActiveEmail)">
-                            <i class="fa fa-check-circle fa-2x" aria-hidden="true"></i>
-                        </button>
-                    </div>
-                    <div class="col">
-                        <button class="btn btn-outline-danger btn-block" ng-click="newActiveEmail = ctrl.dismissEditActiveEmail()">
-                            <i class="fa fa-times-circle fa-2x" aria-hidden="true"></i>
-                        </button>
+            <div ng-show="ctrl.showConfirmCard">
+                <div class="card-block">
+                    <span class="card-text">
+                        На вашу новую электронную почту ({{newEmail}}) отправлено письмо с кодом.
+                    </span>
+                    <hr />
+                    <form>
+                        <input class="form-control" type="text" ng-model="code"/>
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <div class="row">
+                        <div class="col">
+                            <button class="btn btn-outline-success btn-block" ng-click="ctrl.acceptEditEmail(newEmail, code)">
+                                <i class="fa fa-check-circle fa-2x" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-outline-danger btn-block" ng-click="ctrl.dismissEditEmail()">
+                                <i class="fa fa-times-circle fa-2x" aria-hidden="true"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -51,11 +79,4 @@
 
     </div>
     <hr />
-    <div ng-show="ctrl.isEditProfile">
-        <div class="d-flex justify-content-end align-items-center flex-wrap">
-            <button class="btn btn-success mr-1" ng-click="ctrl.acceptEditProfile()">Изменить</button>
-            <button class="btn btn-danger" ng-click="ctrl.dismissEditProfile()">Отменить</button>
-        </div>
-        <hr />
-    </div>
 </div>

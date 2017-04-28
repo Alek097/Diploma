@@ -30,6 +30,8 @@ namespace Diploma.Data
 
         DbSet<Address> Addresses { get; set; }
 
+        DbSet<EditEmailConfirmMessage> EditEmailConfirmMessages { get; set; }
+
         Task<int> SaveChangesAsync();
 
         int SaveChanges();

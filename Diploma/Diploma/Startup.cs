@@ -58,11 +58,14 @@ namespace Diploma
             services.AddTransient<ITokenRepository, TokenRepository>();
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IRoleRepository, RoleRepository>();
+            services.AddTransient<IEditEmailConfirmMessageRepository, EditEmailConfirmMessageRepository>();
 
             services.AddTransient<IAuthorizeBusinessLogic, AuthorizeBusinessLogic>();
+            services.AddTransient<IProfileBussinessLogic, ProfileBussinessLogic>();
 
             services.Configure<List<OAuth>>(this.Configuration.GetSection("OAuth"));
             services.Configure<App>(this.Configuration.GetSection("App"));
+            services.Configure<Email>(this.Configuration.GetSection("Email"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

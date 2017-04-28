@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Diploma.Data
 {
-    public class ApplicationContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>, IContext
+    public class ApplicationContext : IdentityDbContext<User, Role, Guid>, IContext
     {
         private readonly App app;
 
@@ -33,6 +33,8 @@ namespace Diploma.Data
         public DbSet<Address> Addresses { get; set; }
 
         public new DbSet<Role> Roles { get; set; }
+
+        public DbSet<EditEmailConfirmMessage> EditEmailConfirmMessages { get; set; }
 
         public ApplicationContext(IOptions<App> app)
         {

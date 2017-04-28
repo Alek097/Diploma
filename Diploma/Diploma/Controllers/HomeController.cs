@@ -7,10 +7,12 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net.Http;
 using System.IO;
 using Microsoft.Extensions.Logging;
+using Diploma.Filters;
 
 namespace Diploma.Controllers
 {
     [Route("/")]
+    [TypeFilter(typeof(ExceptionFilterAttribute))]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> logger;

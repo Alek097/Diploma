@@ -4,7 +4,6 @@ import { MainService } from '../../MainService';
 import { WaitModalService } from '../../Common/WaitModal/WaitModalService';
 import { ErrorModalService } from '../../Common/ErrorModal/ErrorModalService';
 import { MessageModalService } from '../../Common/MessageModal/MessageModalService';
-import { Button, ButtonType } from '../../Core/Button';
 
 export class ProfileController {
     public static $inject: string[] =
@@ -21,15 +20,15 @@ export class ProfileController {
 
     public newUser: User;
 
-    public isEditActiveEmail: boolean = false;
-    public isEditProfile: boolean = false;
+    public isEditEmail: boolean = false;
+    public showConfirmCard: boolean = false;
 
     constructor(
         private _profileService: ProfileService,
         mainService: MainService,
         waitModalService: WaitModalService,
         private _errorModalService: ErrorModalService,
-        private _scope: ng.IScope,
+        private _scope: any,
         private _messageModalService: MessageModalService
     ) {
         waitModalService.show();
@@ -42,7 +41,7 @@ export class ProfileController {
 
                     this._automapUser();
 
-                    this._setScope(this._scope);
+                    this._setScope();
                 }
                 else {
                     location.href = '/';
@@ -58,62 +57,55 @@ export class ProfileController {
             });
     }
 
-    public dismissEditActiveEmail(): string {
-        this.isEditActiveEmail = false;
+    public dismissSendEditEmailConfirmMessage(): void {
+        this.isEditEmail = false;
 
-        return this.newUser.email;
-    }
-
-    public acceptEditActiveEmail(newActiveEmail: string): void {
-        this.newUser.email = newActiveEmail;
-
-        this._isEditedProfile();
-        this.isEditActiveEmail = false;
-    }
-
-    public dismissEditProfile(): void {
-        this.isEditProfile = false;
-
+        this._setScope();
         this._automapUser();
-        this._setScope(this._scope);
     }
 
-    public acceptEditProfile(): void {
-        this._messageModalService.show('Изменение данных профиля приведут к перезагрузке страницы.', 'Вы уверены?',
-            [
-                new Button(
-                    'Принять',
-                    () => {
-                        return true;
-                    },
-                    ButtonType.success),
-                new Button(
-                    'Отклонить',
-                    () => {
-                        return true;
-                    },
-                    ButtonType.danger)
-            ]);
-    }
+    public acceptSendEditEmailConfirmMessage(newEmail: string): void {
+        this.newUser.email = newEmail;
 
-    private _isEditedProfile(): void {
-        for (let i in this.oldUser) {
-            if (this.oldUser[i] instanceof Array || this.oldUser[i] == null) {
-                continue;
-            }
-            else {
-                if (this.oldUser[i] != this.newUser[i]) {
-                    this.isEditProfile = true;
-                    return;
+        this._profileService.sendConfirmMessage(newEmail)
+            .then((responce) => {
+                if (responce.data.isSuccess) {
+                    this.showConfirmCard = true;
                 }
-            }
-        }
-
-        this.isEditProfile = false;
+                else {
+                    this._messageModalService.show(responce.data.message);
+                }
+            },
+            (responce) => {
+                this._errorModalService.show(responce.status, 'Неизвестная ошибка. Но уже о ней знаем');
+            });
     }
 
-    private _setScope(scope: any): void {
-        scope.newEmail = this.oldUser.email;
+    public acceptEditEmail(newEmail: string, code: string): void {
+        this._profileService.editEmail(newEmail, code)
+            .then((responce) => {
+                if (responce.data.isSuccess) {
+                    this.oldUser.email = responce.data.value;
+                }
+                else {
+                    this._errorModalService.show(responce.data.status, responce.data.message);
+                }
+                this.dismissEditEmail();
+            },
+            (responce) => {
+                this._errorModalService.show(responce.status, 'Неизвестная ошибка. Но уже о ней знаем');
+                this.dismissEditEmail();
+            });
+    }
+
+    public dismissEditEmail(): void {
+        this.dismissSendEditEmailConfirmMessage();
+
+        this.showConfirmCard = false;
+    }
+
+    private _setScope(): void {
+        this._scope.newEmail = this.oldUser.email;
     }
 
     private _automapUser(): void {

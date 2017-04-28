@@ -18,9 +18,10 @@ export class MessageModalService {
     public show(message: string, title: string = null, buttons: Button[] = null): void {
 
         let buttonsWrappers: ButtonWrapper[] = [];
-
-        for (let button of buttons) {
-            buttonsWrappers.push(new ButtonWrapper(this._modalWindowService, button));
+        if (buttons != null) {
+            for (let button of buttons) {
+                buttonsWrappers.push(new ButtonWrapper(this._modalWindowService, button));
+            }
         }
 
         this._modalWindowService.show(

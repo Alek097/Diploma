@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MailKit" Version="1.16.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Diploma.Core\Diploma.Core.csproj" />
     <ProjectReference Include="..\Diploma.Data\Diploma.Data.csproj" />
     <ProjectReference Include="..\Diploma.Repositories\Diploma.Repositories.csproj" />

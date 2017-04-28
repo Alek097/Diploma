@@ -1,23 +1,61 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.DataAnnotations;
 using Diploma.Core;
-using Diploma.Core.ViewModels;
+using Diploma.Filters;
+using Diploma.BusinessLogic.Interfaces;
 
 namespace Diploma.Controllers
 {
     [Produces("application/json")]
     [Route("api/Profile/[action]")]
     [Authorize]
+    [TypeFilter(typeof(ExceptionFilterAttribute))]
     public class ProfileController : Controller
     {
-        public Task<ControllerResult> Edit(UserViewModel user)
+        private readonly IProfileBussinessLogic profile;
+
+        public ProfileController(IProfileBussinessLogic profile)
         {
-            throw new NotImplementedException();
+            this.profile = profile;
+        }
+
+        [HttpGet]
+        public async Task<ControllerResult> SendConfirmEditEmail(string newEmail)
+        {
+            if (string.IsNullOrWhiteSpace(newEmail))
+            {
+                return new ControllerResult()
+                {
+                    IsSuccess = false,
+                    Message = "Поле email пустое.",
+                    Status = 400
+                };
+            }
+            else
+            {
+                return await this.profile.SendConfirmEditEmail(this.User.Identity.Name, newEmail);
+            }
+        }
+
+        [HttpGet]
+        public async Task<ControllerResult<string>> EditEmail(string code, string newEmail)
+        {
+            if (string.IsNullOrWhiteSpace(code) || string.IsNullOrWhiteSpace(newEmail))
+            {
+                return new ControllerResult<string>()
+                {
+                    IsSuccess = false,
+                    Message = "Bad request",
+                    Status = 400
+                };
+            }
+            else
+            {
+                return await this.profile.EditEmail(code, newEmail, this.User.Identity.Name);
+            }
         }
     }
 }
