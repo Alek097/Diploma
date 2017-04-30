@@ -4,6 +4,9 @@ import { MainService } from '../../MainService';
 import { WaitModalService } from '../../Common/WaitModal/WaitModalService';
 import { ErrorModalService } from '../../Common/ErrorModal/ErrorModalService';
 import { MessageModalService } from '../../Common/MessageModal/MessageModalService';
+import { Global } from '../../Core/Global';
+import { EditAddressModalService } from './EditAddressModal/EditAddressModalService';
+import { Address } from '../../Common/Models/Address';
 
 export class ProfileController {
     public static $inject: string[] =
@@ -13,7 +16,8 @@ export class ProfileController {
         'waitModalService',
         'errorModalService',
         '$scope',
-        'messageModalService'
+        'messageModalService',
+        'editAddressModalService'
     ];
 
     public oldUser: User;
@@ -29,7 +33,8 @@ export class ProfileController {
         waitModalService: WaitModalService,
         private _errorModalService: ErrorModalService,
         private _scope: any,
-        private _messageModalService: MessageModalService
+        private _messageModalService: MessageModalService,
+        private _editAddressModalService: EditAddressModalService
     ) {
         waitModalService.show();
 
@@ -86,6 +91,7 @@ export class ProfileController {
             .then((responce) => {
                 if (responce.data.isSuccess) {
                     this.oldUser.email = responce.data.value;
+                    Global.changeUser(this.oldUser);
                 }
                 else {
                     this._errorModalService.show(responce.data.status, responce.data.message);
@@ -102,6 +108,17 @@ export class ProfileController {
         this.dismissSendEditEmailConfirmMessage();
 
         this.showConfirmCard = false;
+    }
+
+    public addAddrress(): void {
+        let address = new Address();
+
+        this._editAddressModalService.show(address, (address: Address, isOk: boolean) => {
+            if (isOk)
+            {
+                this.oldUser.addresses.push(address);
+            }
+        });
     }
 
     private _setScope(): void {

@@ -1,8 +1,6 @@
 ﻿using Diploma.Core;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using Diploma.Core.ViewModels;
 
 namespace Diploma.BusinessLogic.Interfaces
 {
@@ -10,5 +8,8 @@ namespace Diploma.BusinessLogic.Interfaces
     {
         Task<ControllerResult> SendConfirmEditEmail(string userName, string newEmail);
         Task<ControllerResult<string>> EditEmail(string code, string newEmail, string userName);
+        Task<ControllerResult<AddressViewModel>> AddAddress(AddressViewModel address, string userName);
+        Task<ControllerResult> DeleteAddress(string id, string name);
+        Task<ControllerResult<AddressViewModel>> EditAddress(string name, AddressViewModel address);
     }
 }

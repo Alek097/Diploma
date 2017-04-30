@@ -4,6 +4,7 @@ import { Global } from './Core/Global';
 import { ModalWindowService } from './Common/ModalWindow/ModalWindowService';
 import { ModalOptions } from './Core/ModalOptions';
 import { ErrorModalService } from './Common/ErrorModal/ErrorModalService';
+import { MessageModalService } from './Common/MessageModal/MessageModalService';
 
 export class MainController {
 
@@ -13,18 +14,20 @@ export class MainController {
     [
         'mainService',
         'modalWindowService',
-        'errorModalService'
+        'errorModalService',
+        'messageModalService'
     ]
 
     constructor(
         private _mainService: MainService,
         private _modalWindowService: ModalWindowService,
-        errorModalService: ErrorModalService
+        errorModalService: ErrorModalService,
+        messageModalService: MessageModalService
     ) {
         this._mainService.getUser()
             .then((responce) => {
                 this.user = responce.data.value;
-                Global.user = this.user;
+                Global.onChangeUser.push((user: User) => this.user = user);
 
                 if (!(responce.data.isSuccess)) {
                     errorModalService.show(responce.data.status, responce.data.message);

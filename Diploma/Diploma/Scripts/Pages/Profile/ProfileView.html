@@ -57,7 +57,7 @@
                     </span>
                     <hr />
                     <form>
-                        <input class="form-control" type="text" ng-model="code"/>
+                        <input class="form-control" type="text" ng-model="code" />
                     </form>
                 </div>
                 <div class="card-footer">
@@ -79,4 +79,23 @@
 
     </div>
     <hr />
+
+    <div class="card card-outline-info text-center" id="profile--addresses">
+        <div class="card-header card-info text-white">
+            <span class="card-title">Адреса</span>
+        </div>
+        <div class="card-block" ng-show="ctrl.oldUser.addresses.length == 0 || ctrl.oldUser.addresses == null">
+            <div class="text-center">
+                <p class="card-text">
+                    У вас нет адресов доставки
+                </p>
+                <button class="btn btn-outline-success" ng-click="ctrl.addAddrress()">
+                    <i class="fa fa-2x fa-plus-circle" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-block d-flex justify-content-around flex-wrap" ng-show="!(ctrl.oldUser.addresses.length == 0 || ctrl.oldUser.addresses == null)">
+
+        </div>
+    </div>
 </div>

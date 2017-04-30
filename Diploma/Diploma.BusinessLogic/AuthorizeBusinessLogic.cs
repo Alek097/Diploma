@@ -211,7 +211,7 @@ namespace Diploma.BusinessLogic
 
         public async Task<ControllerResult<UserViewModel>> GetUser(string name)
         {
-            return await Task.Run<ControllerResult<UserViewModel>>(() =>
+            return await Task.Run(() =>
             {
 
                 User user = this.userRepository
@@ -244,16 +244,16 @@ namespace Diploma.BusinessLogic
 
                     Addresses = user.Addresses.Select(a => new AddressViewModel()
                     {
+                        Id = a.Id.ToString(),
                         City = a.City,
                         Country = a.Country,
                         FirstName = a.FirstName,
-                        FullName = a.FullName,
                         LastName = a.LastName,
                         MiddleName = a.MiddleName,
                         PhoneNumber = a.PhoneNumber,
                         PostCode = a.PostCode,
                         Region = a.Region
-                    }).ToList(),
+                    }),
 
                     Orders = user.Orders.Select(order => new OrderViewModel()
                     {
@@ -270,7 +270,7 @@ namespace Diploma.BusinessLogic
                             {
                                 Name = characteristics.Name,
                                 Value = characteristics.Value
-                            }).ToList(),
+                            }),
 
                             CharacteristicsGroups = product.CharacteristicsGroups.Select(chGroup => new CharacteristicsGroupViewModel()
                             {
@@ -280,13 +280,13 @@ namespace Diploma.BusinessLogic
                                 {
                                     Name = characteristics.Name,
                                     Value = characteristics.Value
-                                }).ToList()
+                                })
 
-                            }).ToList()
+                            })
 
-                        }).ToList()
+                        })
 
-                    }).ToList()
+                    })
                 };
 
                 return new ControllerResult<UserViewModel>()

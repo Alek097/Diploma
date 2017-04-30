@@ -1,11 +1,11 @@
-using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using System.ComponentModel.DataAnnotations;
 using Diploma.Core;
 using Diploma.Filters;
 using Diploma.BusinessLogic.Interfaces;
+using Diploma.Core.ViewModels;
+using System;
 
 namespace Diploma.Controllers
 {
@@ -56,6 +56,31 @@ namespace Diploma.Controllers
             {
                 return await this.profile.EditEmail(code, newEmail, this.User.Identity.Name);
             }
+        }
+
+        [HttpPost]
+        public async Task<ControllerResult<AddressViewModel>> AddAddress([FromBody]AddressViewModel address)
+        {
+            return await this.profile.AddAddress(address, this.User.Identity.Name);
+        }
+
+        [HttpGet]
+        public async Task<ControllerResult> DeleteAddress(string id)
+        {
+            return await this.profile.DeleteAddress(id, this.User.Identity.Name);
+        }
+
+        [HttpPost]
+        public async Task<ControllerResult<AddressViewModel>> EditAddress([FromBody]AddressViewModel address)
+        {
+            return await this.profile.EditAddress(this.User.Identity.Name, address as AddressViewModel);
+        }
+
+        [HttpGet]
+        [Produces("text/plain")]
+        public string GetId()
+        {
+            return Guid.NewGuid().ToString();
         }
     }
 }

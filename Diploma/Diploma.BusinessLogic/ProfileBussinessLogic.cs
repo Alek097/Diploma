@@ -11,6 +11,7 @@ using MailKit.Net.Smtp;
 using MimeKit.Text;
 using Microsoft.Extensions.Options;
 using Diploma.Core.ConfigureModels;
+using Diploma.Core.ViewModels;
 
 namespace Diploma.BusinessLogic
 {
@@ -31,6 +32,150 @@ namespace Diploma.BusinessLogic
             this.editEmailConfirmMessageRepository = editEmailConfirmMessageRepository;
             this.logger = logger;
             this.email = email.Value;
+        }
+
+        public async Task<ControllerResult<AddressViewModel>> AddAddress(AddressViewModel address, string userName)
+        {
+            User currentUser = this.userRepository.Get()
+                .FirstOrDefault(u => u.UserName == userName);
+
+            if (currentUser == null)
+            {
+                this.logger.LogError(new EventId(), $"User {userName} not a found");
+
+                return new ControllerResult<AddressViewModel>()
+                {
+                    IsSuccess = false,
+                    Message = "Пользователь не найден. Попробуйте обновить страницу.",
+                    Status = 404,
+                    Value = null
+                };
+            }
+            else
+            {
+                Address newAddress = new Address()
+                {
+                    Id = Guid.Parse(address.Id),
+                    City = address.City,
+                    Country = address.Country,
+                    FirstName = address.FirstName,
+                    LastName = address.LastName,
+                    LocalAddress = address.Address,
+                    MiddleName = address.MiddleName,
+                    PhoneNumber = address.PhoneNumber,
+                    PostCode = address.PostCode,
+                    Region = address.Region
+                };
+
+                currentUser.Addresses.Add(newAddress);
+
+                this.userRepository.Modify(currentUser, currentUser.Id);
+
+                await this.userRepository.SaveChangesAsync();
+
+                return new ControllerResult<AddressViewModel>()
+                {
+                    IsSuccess = true,
+                    Status = 200,
+                    Value = address
+                };
+            }
+        }
+
+        public async Task<ControllerResult> DeleteAddress(string id, string name)
+        {
+            Guid guidId = Guid.Parse(id);
+
+            User current = this.userRepository.Get()
+                .FirstOrDefault(u => u.UserName == name);
+
+            if (current == null)
+            {
+                return new ControllerResult()
+                {
+                    IsSuccess = false,
+                    Status = 404,
+                    Message = "Пользователь не найден. Попробуйте обновить страницу."
+                };
+            }
+            else
+            {
+                Address deleteAddress = current.Addresses.FirstOrDefault(address => address.Id == guidId);
+
+                if (deleteAddress != null)
+                {
+                    current.Addresses.Remove(deleteAddress);
+                    await this.userRepository.SaveChangesAsync();
+
+                    return new ControllerResult()
+                    {
+                        IsSuccess = true,
+                        Status = 200
+                    };
+                }
+                else
+                {
+                    return new ControllerResult()
+                    {
+                        IsSuccess = true,
+                        Message = "Адрес не найден. Попробуйте перезагрузить страницу.",
+                        Status = 404
+                    };
+                }
+            }
+        }
+
+        public async Task<ControllerResult<AddressViewModel>> EditAddress(string name, AddressViewModel address)
+        {
+            User current = this.userRepository.Get()
+                .FirstOrDefault(u => u.UserName == name);
+
+            if (current == null)
+            {
+                return new ControllerResult<AddressViewModel>()
+                {
+                    IsSuccess = false,
+                    Status = 404,
+                    Message = "Пользователь не найден. Попробуйте обновить страницу."
+                };
+            }
+            else
+            {
+                Address modifyAddress = current.Addresses.FirstOrDefault(a => address.Id == address.Id);
+
+                if (modifyAddress == null)
+                {
+                    return new ControllerResult<AddressViewModel>()
+                    {
+                        IsSuccess = true,
+                        Message = "Адрес не найден. Попробуйте перезагрузить страницу.",
+                        Status = 404
+                    };
+                }
+                else
+                {
+                    modifyAddress.City = address.City;
+                    modifyAddress.Country = address.Country;
+                    modifyAddress.FirstName = address.FirstName;
+                    modifyAddress.LastName = address.LastName;
+                    modifyAddress.MiddleName = address.MiddleName;
+                    modifyAddress.PhoneNumber = address.PhoneNumber;
+                    modifyAddress.PostCode = address.PostCode;
+                    modifyAddress.Region = address.Region;
+                    modifyAddress.LocalAddress = address.Address;
+
+                    this.userRepository.Modify(current, current.Id);
+
+                    await this.userRepository.SaveChangesAsync();
+
+                    return new ControllerResult<AddressViewModel>()
+                    {
+                        IsSuccess = true,
+                        Status = 200,
+                        Value = address
+                    };
+                }
+            }
         }
 
         public async Task<ControllerResult<string>> EditEmail(string code, string newEmail, string userName)

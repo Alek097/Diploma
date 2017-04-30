@@ -12,14 +12,9 @@ namespace Diploma.Core.ViewModels
 
         public decimal Price { get; set; }
 
-        public ICollection<CharacteristicsGroupViewModel> CharacteristicsGroups { get; set; }
+        public IEnumerable<CharacteristicsGroupViewModel> CharacteristicsGroups { get; set; }
 
-        public ICollection<CharacteristicViewModel> Characteristics { get; set; }
+        public IEnumerable<CharacteristicViewModel> Characteristics { get; set; }
 
-        public ProductViewModel()
-        {
-            this.CharacteristicsGroups = new List<CharacteristicsGroupViewModel>();
-            this.Characteristics = new List<CharacteristicViewModel>();
-        }
     }
 }

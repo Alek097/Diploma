@@ -6,11 +6,7 @@ namespace Diploma.Core.ViewModels
     {
         public decimal TotalPrice { get; set; }
 
-        public ICollection<ProductViewModel> Products { get; set; }
+        public IEnumerable<ProductViewModel> Products { get; set; }
 
-        public OrderViewModel()
-        {
-            this.Products = new List<ProductViewModel>();
-        }
     }
 }

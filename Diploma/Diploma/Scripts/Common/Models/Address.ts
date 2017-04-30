@@ -1,20 +1,21 @@
 ﻿export class Address {
+    public id: string = null;
 
-    public LastName: string = null;
+    public lastName: string = null;
 
-    public FirstName: string = null;
+    public firstName: string = null;
 
-    public MiddleName: string = null;
+    public middleName: string = null;
 
-    public FullName: string = null;
+    public city: string = null;
 
-    public City: string = null;
+    public country: string = null;
 
-    public Country: string = null;
+    public region: string = null;
 
-    public Region: string = null;
+    public postCode: string = null;
 
-    public PostCode: string = null;
+    public phoneNumber: string = null;
 
-    public PhoneNumber: string = null;
+    public address: string = null;
 }

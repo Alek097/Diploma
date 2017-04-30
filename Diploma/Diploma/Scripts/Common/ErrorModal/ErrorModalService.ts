@@ -18,6 +18,7 @@ export class ErrorModalService {
             <ModalOptions>
             {
                 controller: 'errorModalController',
+                controllerAs: 'errorModalCtrl',
                 template: errorModalTemplate,
                 inject: {
                     status: status,
