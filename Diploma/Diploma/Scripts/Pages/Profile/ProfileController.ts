@@ -82,7 +82,7 @@ export class ProfileController {
                 }
             },
             (responce) => {
-                this._errorModalService.show(responce.status, 'Неизвестная ошибка. Но уже о ней знаем');
+                this._errorModalService.show(responce.status, 'Неизвестная ошибка. Но мы уже о ней знаем');
             });
     }
 
@@ -99,7 +99,7 @@ export class ProfileController {
                 this.dismissEditEmail();
             },
             (responce) => {
-                this._errorModalService.show(responce.status, 'Неизвестная ошибка. Но уже о ней знаем');
+                this._errorModalService.show(responce.status, 'Неизвестная ошибка. Но мы уже о ней знаем');
                 this.dismissEditEmail();
             });
     }
@@ -114,11 +114,37 @@ export class ProfileController {
         let address = new Address();
 
         this._editAddressModalService.show(address, (address: Address, isOk: boolean) => {
-            if (isOk)
-            {
+            if (isOk) {
                 this.oldUser.addresses.push(address);
             }
         });
+    }
+
+    public editAddress(id: string): void {
+        this.oldUser.addresses.forEach((value, i) => {
+            if (value.id == id) {
+                this._editAddressModalService.show(value, (address, isOk) => {
+                    if (isOk) {
+                        this.oldUser.addresses[i] = address;
+                    }
+                });
+            }
+        });
+    }
+
+    public deleteAddress(id: string): void {
+        this._profileService.deleteAddress(id)
+            .then((responce) => {
+                for (var i = 0; i < this.oldUser.addresses.length; i++) {
+                    if (this.oldUser.addresses[i].id == id) {
+                        this.oldUser.addresses.splice(i, 1);
+                        break;
+                    }
+                }
+            },
+            (responce) => {
+                this._errorModalService.show(responce.status, 'Неизвестная ошибка. Но мы уже о ней знаем')
+            });
     }
 
     private _setScope(): void {

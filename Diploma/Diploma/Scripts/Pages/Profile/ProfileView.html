@@ -11,8 +11,8 @@
                         На электронную почту приходят оповещания о ваших покупках, новости и прочее.
                     </span>
                     <hr />
-                    <div class="card-text" title="{{ctrl.newUser.email}}">
-                        <div>
+                    <div class="card-text" title="{{newEmail}}">
+                        <div id="profile--system_info-email">
                             <span ng-show="emailForm.emailInput.$valid">{{newEmail}}</span>
                             <span class="h4" ng-show="emailForm.emailInput.$invalid || newEmail == ''">Неверный формат</span>
                         </div>
@@ -94,8 +94,122 @@
                 </button>
             </div>
         </div>
-        <div class="card-block d-flex justify-content-around flex-wrap" ng-show="!(ctrl.oldUser.addresses.length == 0 || ctrl.oldUser.addresses == null)">
+        <div class="card-block d-flex justify-content-around flex-wrap align-items-center mt-1" ng-show="!(ctrl.oldUser.addresses.length == 0 || ctrl.oldUser.addresses == null)">
 
+            <div class="card card-outline-primary mr-sm-1 mb-2 text-left" ng-repeat="address in ctrl.oldUser.addresses">
+                <div class="card-header card-primary text-white">
+                    <span class="card-title">{{address.lastName}}</span><br />
+                    <span class="card-title">{{address.firstName}}</span><br />
+                    <span class="card-title">{{address.middleName}}</span>
+                </div>
+                <div>
+                    <div class="card-block">
+                        <div class="d-flex justify-content-start align-items-center flex-wrap">
+                            <div>
+                                <span><strong>Фамилия:</strong> </span><br />
+                            </div>
+                            <div>
+                                <span>{{address.lastName}}</span><br />
+                            </div>
+                        </div>
+                        <hr />
+
+                        <div class="d-flex justify-content-start align-items-center flex-wrap">
+                            <div>
+                                <span><strong>Имя:</strong> </span><br />
+                            </div>
+                            <div>
+                                <span>{{address.firstName}}</span><br />
+                            </div>
+                        </div>
+                        <hr />
+
+                        <div class="d-flex justify-content-start align-items-center flex-wrap">
+                            <div>
+                                <span><strong>Отчество:</strong> </span><br />
+                            </div>
+                            <div>
+                                <span>{{address.middleName}}</span><br />
+                            </div>
+                        </div>
+                        <hr />
+
+                        <div class="d-flex justify-content-start align-items-center flex-wrap">
+                            <div>
+                                <span><strong>Страна:</strong> </span><br />
+                            </div>
+                            <div>
+                                <span>{{address.country}}</span><br />
+                            </div>
+                        </div>
+                        <hr />
+
+                        <div class="d-flex justify-content-start align-items-center flex-wrap">
+                            <div>
+                                <span><strong>Регион (Область):</strong> </span><br />
+                            </div>
+                            <div>
+                                <span>{{address.region}}</span><br />
+                            </div>
+                        </div>
+                        <hr />
+
+                        <div class="d-flex justify-content-start align-items-center flex-wrap">
+                            <div>
+                                <span><strong>Город:</strong> </span><br />
+                            </div>
+                            <div>
+                                <span>{{address.city}}</span><br />
+                            </div>
+                        </div>
+                        <hr />
+
+                        <div class="d-flex justify-content-start align-items-center flex-wrap">
+                            <div>
+                                <span><strong>Адрес:</strong> </span><br />
+                            </div>
+                            <div>
+                                <span>{{address.address}}</span><br />
+                            </div>
+                        </div>
+                        <hr />
+
+                        <div class="d-flex justify-content-start align-items-center flex-wrap">
+                            <div>
+                                <span><strong>Почтовый индекс:</strong> </span><br />
+                            </div>
+                            <div>
+                                <span>{{address.postCode}}</span><br />
+                            </div>
+                        </div>
+                        <hr />
+
+                        <div class="d-flex justify-content-start align-items-center flex-wrap">
+                            <div>
+                                <span><strong>Номер телефона:</strong> </span><br />
+                            </div>
+                            <div>
+                                <span>{{address.phoneNumber}}</span><br />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer d-flex justify-content-around align-items-center flex-wrap">
+
+                        <button class="btn btn-outline-primary" ng-click="ctrl.editAddress(address.id)">
+                            <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+                        </button> 
+
+                        <button class="btn btn-outline-danger" ng-click="ctrl.deleteAddress(address.id)">
+                            <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                        </button> 
+
+                    </div>
+                </div>
+            </div>
+
+            <button class="btn btn-outline-success" ng-click="ctrl.addAddrress()">
+                <i class="fa fa-2x fa-plus-circle" aria-hidden="true"></i>
+            </button>
         </div>
     </div>
 </div>

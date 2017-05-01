@@ -21,17 +21,20 @@ namespace Diploma.BusinessLogic
         private readonly IEditEmailConfirmMessageRepository editEmailConfirmMessageRepository;
         private readonly ILogger<ProfileBussinessLogic> logger;
         private readonly Email email;
+        private readonly IAddressRepository addressRepository;
 
         public ProfileBussinessLogic(
             IUserRepository userRepository,
             IEditEmailConfirmMessageRepository editEmailConfirmMessageRepository,
             ILogger<ProfileBussinessLogic> logger,
-            IOptions<Email> email)
+            IOptions<Email> email,
+            IAddressRepository addressRepository)
         {
             this.userRepository = userRepository;
             this.editEmailConfirmMessageRepository = editEmailConfirmMessageRepository;
             this.logger = logger;
             this.email = email.Value;
+            this.addressRepository = addressRepository;
         }
 
         public async Task<ControllerResult<AddressViewModel>> AddAddress(AddressViewModel address, string userName)
@@ -104,8 +107,8 @@ namespace Diploma.BusinessLogic
 
                 if (deleteAddress != null)
                 {
-                    current.Addresses.Remove(deleteAddress);
-                    await this.userRepository.SaveChangesAsync();
+                    this.addressRepository.Delete(deleteAddress, current.Id);
+                    await this.addressRepository.SaveChangesAsync();
 
                     return new ControllerResult()
                     {
@@ -130,6 +133,8 @@ namespace Diploma.BusinessLogic
             User current = this.userRepository.Get()
                 .FirstOrDefault(u => u.UserName == name);
 
+            Guid guidId = Guid.Parse(address.Id);
+
             if (current == null)
             {
                 return new ControllerResult<AddressViewModel>()
@@ -141,7 +146,7 @@ namespace Diploma.BusinessLogic
             }
             else
             {
-                Address modifyAddress = current.Addresses.FirstOrDefault(a => address.Id == address.Id);
+                Address modifyAddress = current.Addresses.FirstOrDefault(a => a.Id == guidId);
 
                 if (modifyAddress == null)
                 {
@@ -164,9 +169,9 @@ namespace Diploma.BusinessLogic
                     modifyAddress.Region = address.Region;
                     modifyAddress.LocalAddress = address.Address;
 
-                    this.userRepository.Modify(current, current.Id);
+                    this.addressRepository.Modify(modifyAddress, current.Id);
 
-                    await this.userRepository.SaveChangesAsync();
+                    await this.addressRepository.SaveChangesAsync();
 
                     return new ControllerResult<AddressViewModel>()
                     {

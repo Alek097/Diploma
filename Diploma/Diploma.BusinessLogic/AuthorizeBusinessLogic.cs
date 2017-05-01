@@ -242,7 +242,9 @@ namespace Diploma.BusinessLogic
                     IsBanned = user.IsBanned,
                     Role = role.Name,
 
-                    Addresses = user.Addresses.Select(a => new AddressViewModel()
+                    Addresses = user.Addresses
+                    .Where(a=>!(a.IsDeleted))
+                    .Select(a => new AddressViewModel()
                     {
                         Id = a.Id.ToString(),
                         City = a.City,
@@ -252,7 +254,8 @@ namespace Diploma.BusinessLogic
                         MiddleName = a.MiddleName,
                         PhoneNumber = a.PhoneNumber,
                         PostCode = a.PostCode,
-                        Region = a.Region
+                        Region = a.Region,
+                        Address = a.LocalAddress
                     }),
 
                     Orders = user.Orders.Select(order => new OrderViewModel()
