@@ -4,9 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Diploma.Repositories.Interfaces
+namespace Diploma.BusinessLogic.Interfaces
 {
-    public interface IAuthorizeRepository : IDisposable
+    public interface IAuthorizeBusinessLogic : IDisposable
     {
         Task<string> GetRedirectUrl(string provider);
         Task<List<OAuthViewModel>> GetOAuthProviders();

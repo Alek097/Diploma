@@ -1,0 +1,67 @@
+﻿<div class="modal-content" id="editAddressModal">
+    <div ng-show="!(isWait)">
+        <div class="modal-header">
+            <p class="h3">
+                {{newAddress.lastName}} {{newAddress.firstName}} {{newAddress.middleName}}
+            </p>
+        </div>
+        <div class="modal-body">
+            <form name="editAddressForm">
+                <input type="hidden" ng-model="newAddress.id" name="id"/>
+                <label>Фамлия</label>
+                <input class="form-control" type="text" ng-model="newAddress.lastName" required name="lastName" />
+
+                <label>Имя</label>
+                <input class="form-control" type="text" ng-model="newAddress.firstName" required name="firstName" />
+
+                <label>Отчество</label>
+                <input class="form-control" type="text" ng-model="newAddress.middleName" required name="middleName" />
+
+                <label>Страна</label>
+                <input class="form-control" type="text" ng-model="newAddress.country" required name="country" />
+
+                <label>Регион (Область)</label>
+                <input class="form-control" type="text" ng-model="newAddress.region" required name="region" />
+
+                <label>Город</label>
+                <input class="form-control" type="text" ng-model="newAddress.city" required name="city" />
+
+                <label>Адрес</label>
+                <input class="form-control" type="text" ng-model="newAddress.address" placeholder="ул. Ленина д.1 кв.1" required name="address" />
+
+                <label>Почтовый индекс</label>
+                <input class="form-control" type="text" ng-model="newAddress.postCode" required name="postCode" />
+
+                <label>Номер мобильного</label>
+                <input class="form-control" type="text" ng-model="newAddress.phoneNumber" required name="phoneNumber" />
+            </form>
+        </div>
+        <div class="modal-footer d-flex justify-content-around align-items-center">
+            <button class="btn btn-outline-success"
+                    ng-click="editAddressCtrl.ok()"
+                    ng-disabled="
+                    editAddressForm.id.$invalid
+                    || editAddressForm.lastName.$invalid
+                    || editAddressForm.firstName.$invalid
+                    || editAddressForm.middleName.$invalid
+                    || editAddressForm.country.$invalid
+                    || editAddressForm.region.$invalid
+                    || editAddressForm.city.$invalid
+                    || editAddressForm.address.$invalid
+                    || editAddressForm.postCode.$invalid
+                    || editAddressForm.phoneNumber.$invalid">
+                <i class="fa fa-check-circle fa-2x" ng-show="!(isWaitEdit)" aria-hidden="true"></i>
+                <i class="fa fa-spinner fa-pulse fa-2x fa-fw margin-bottom" ng-show="isWaitEdit"></i>
+            </button>
+            <button class="btn btn-outline-danger" ng-click="editAddressCtrl.close()">
+                <i class="fa fa-times-circle fa-2x" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+
+    <div class="modal-content" ng-show="isWait">
+        <div class="modal-body">
+            <i class="fa fa-spinner fa-pulse fa-3x fa-fw margin-bottom"></i>
+        </div>
+    </div>
+</div>

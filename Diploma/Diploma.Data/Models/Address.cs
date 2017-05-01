@@ -23,5 +23,12 @@ namespace Diploma.Data.Models
         public string PostCode { get; set; }
 
         public string PhoneNumber { get; set; }
+
+        public string LocalAddress { get; set; }
+
+        public Address()
+        {
+            this.Id = Guid.NewGuid();
+        }
     }
 }

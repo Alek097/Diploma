@@ -6,11 +6,6 @@ namespace Diploma.Core.ViewModels
     {
         public string Name { get; set; }
 
-        public ICollection<CharacteristicViewModel> Characteristics { get; set; }
-
-        public CharacteristicsGroupViewModel()
-        {
-            this.Characteristics = new List<CharacteristicViewModel>();
-        }
+        public IEnumerable<CharacteristicViewModel> Characteristics { get; set; }
     }
 }

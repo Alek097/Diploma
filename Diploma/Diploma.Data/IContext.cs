@@ -26,16 +26,26 @@ namespace Diploma.Data
 
         DbSet<Token> Tokens { get; set; }
 
-        DbSet<IdentityRole<Guid>> Roles { get; set; }
+        DbSet<Role> Roles { get; set; }
+
+        DbSet<Address> Addresses { get; set; }
+
+        DbSet<EditEmailConfirmMessage> EditEmailConfirmMessages { get; set; }
 
         Task<int> SaveChangesAsync();
 
         int SaveChanges();
 
-        void Delete<TEntity>(TEntity entity, User deleteBy = null) where TEntity : class, IDeletable;
+        void Delete<TEntity>(TEntity entity, Guid? deleteBy = null) where TEntity : class;
 
-        void Edit<TEntity>(TEntity entity, User editBy = null) where TEntity : class;
+        void Modify<TEntity>(TEntity entity, Guid? modifyBy = null) where TEntity : class;
 
-        void Create<TEntity, TId>(TEntity entity, User createBy = null) where TEntity : class, IBaseEntity<TId>;
+        void Create<TEntity, TId>(TEntity entity, Guid? createBy = null) where TEntity : class, IBaseEntity<TId>;
+
+        Task DeleteAsync<TEntity>(TEntity entity, Guid? deleteBy = null) where TEntity : class;
+
+        Task ModifyAsync<TEntity>(TEntity entity, Guid? modifyBy = null) where TEntity : class;
+
+        Task CreateAsync<TEntity, TId>(TEntity entity, Guid? createBy = null) where TEntity : class, IBaseEntity<TId>;
     }
 }

@@ -4,8 +4,8 @@
     <title></title>
     <meta charset="utf-8" />
     <link href="Bundles/lib/tether/dist/css/tether.min.css" rel="stylesheet" />
-    <link href="Bundles/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
     <link href="Bundles/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="Bundles/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 <body ng-controller="mainController as mainCtrl">
     <nav class="navbar navbar-toggleable-md navbar-inverse bg-inverse" id="mainNav">
@@ -24,7 +24,7 @@
                         {{mainCtrl.user.email}}
                     </a>
                     <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <a class="dropdown-item" href="#">Профиль</a>
+                        <a class="dropdown-item" href="#!/profile">Профиль</a>
                         <a class="dropdown-item" href="#">Заказы</a>
                         <a class="dropdown-item" href="#" ng-click="mainCtrl.signOut()">Выход</a>
                     </div>

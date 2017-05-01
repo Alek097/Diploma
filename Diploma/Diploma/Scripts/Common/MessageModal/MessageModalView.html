@@ -1,0 +1,16 @@
+﻿<div class="modal-content">
+    <div class="modal-header" ng-show="title != null">
+        <p class="h3">{{title}}</p>
+    </div>
+    <div class="modal-body">
+        <p class="h5">{{message}}</p>
+    </div>
+    <div class="modal-footer d-flex justify-content-end align-items-center flex-wrap" ng-show="buttons.length > 0">
+        <button ng-repeat="button in buttons"
+                ng-class="button.buttonClass"
+                ng-click="button.callBack()"
+                class="btn">
+            {{button.name}}
+        </button>
+    </div>
+</div>

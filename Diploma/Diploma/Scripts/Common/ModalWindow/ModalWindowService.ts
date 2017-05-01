@@ -14,11 +14,15 @@ export class ModalWindowService {
         this._insertElement = angular.element('#modalWindow>.modal-dialog');
     }
 
-    public show(options: ModalOptions) {
+    public show(options: ModalOptions, onClose?: () => void): void {
         let template: string = null;
 
+        if (onClose != null) {
+            this._modal.on('hidden.bs.modal', onClose);
+        }
+
         if (options.controller != null) {
-            template = '<div ng-controller="' + options.controller + ' ' + (options.controllerAs != null || options.controllerAs != '' ? 'as ' + options.controllerAs : '') + '">' + options.template + '</div>'
+            template = '<div ng-controller="' + options.controller + ' ' + (options.controllerAs != null && options.controllerAs != '' ? 'as ' + options.controllerAs : '') + '">' + options.template + '</div>'
         }
         else {
             template = options.template;
@@ -26,12 +30,12 @@ export class ModalWindowService {
 
         let insertElement = this._insertElement;
 
-        angular.element(document).ready(function () {
+        angular.element(document).ready(() => {
             var $div = $(template);
-            
-            $(insertElement).append($div);
 
-            angular.element(document).injector().invoke(function ($compile) {
+            $(insertElement).html(<any>$div);
+
+            angular.element(document).injector().invoke(($compile) => {
                 var scope = angular.element($div).scope();
 
                 for (let injectName in options.inject) {
@@ -40,10 +44,15 @@ export class ModalWindowService {
 
                 $compile($div)(scope);
                 scope.$digest();
+
+                this._modal.modal('show');
             });
-
         });
+    }
 
-        this._modal.modal('show');
+    public close(): void {
+        setTimeout(() => {
+            this._modal.modal('hide');
+        }, 500);
     }
 }

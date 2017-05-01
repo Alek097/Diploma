@@ -16,14 +16,9 @@ namespace Diploma.Core.ViewModels
 
         public string Role { get; set; }
 
-        public ICollection<OrderViewModel> Orders { get; set; }
+        public IEnumerable<OrderViewModel> Orders { get; set; }
 
-        public ICollection<AddressViewModel> Addresses { get; set; }
+        public IEnumerable<AddressViewModel> Addresses { get; set; }
 
-        public UserViewModel()
-        {
-            this.Orders = new List<OrderViewModel>();
-            this.Addresses = new List<AddressViewModel>();
-        }
     }
 }

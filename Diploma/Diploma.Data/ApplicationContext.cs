@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity;
 
 namespace Diploma.Data
 {
-    public class ApplicationContext : IdentityDbContext<User, IdentityRole<Guid>, Guid>, IContext
+    public class ApplicationContext : IdentityDbContext<User, Role, Guid>, IContext
     {
         private readonly App app;
 
@@ -30,6 +30,12 @@ namespace Diploma.Data
 
         public DbSet<Token> Tokens { get; set; }
 
+        public DbSet<Address> Addresses { get; set; }
+
+        public new DbSet<Role> Roles { get; set; }
+
+        public DbSet<EditEmailConfirmMessage> EditEmailConfirmMessages { get; set; }
+
         public ApplicationContext(IOptions<App> app)
         {
             this.app = app.Value;
@@ -46,27 +52,34 @@ namespace Diploma.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(this.app == null ? @"data source=(LocalDb)\v11.0;Initial Catalog=Diploma;Integrated Security=True;" : this.app.ConnectionString);
+            optionsBuilder.UseSqlServer(this.app == null ? @"data source=.\;Initial Catalog=Diploma;Integrated Security=True;" : this.app.ConnectionString);
         }
 
-        public void Delete<TEntity>(TEntity entity, User deleteBy = null)
-            where TEntity : class, IDeletable
+        public void Delete<TEntity>(TEntity entity, Guid? deleteBy = null)
+            where TEntity : class
         {
-            entity.IsDeleted = true;
+            if (entity is IDeletable)
+            {
+                (entity as IDeletable).IsDeleted = true;
 
-            this.Edit(entity, deleteBy);
+                this.Modify(entity, deleteBy);
+            }
+            else
+            {
+                this.Entry<TEntity>(entity).State = EntityState.Deleted;
+            }
         }
 
-        public void Edit<TEntity>(TEntity entity, User editBy = null)
+        public void Modify<TEntity>(TEntity entity, Guid? modifyBy = null)
             where TEntity : class
         {
             if (entity is IAuditable)
             {
                 IAuditable auditableEntity = entity as IAuditable;
 
-                if (editBy != null)
+                if (modifyBy != null)
                 {
-                    auditableEntity.ModifyBy = editBy.Id;
+                    auditableEntity.ModifyBy = modifyBy;
                 }
 
                 auditableEntity.LastModifyDate = DateTime.Now;
@@ -75,7 +88,7 @@ namespace Diploma.Data
             this.Entry(entity).State = EntityState.Modified;
         }
 
-        public void Create<TEntity, TId>(TEntity entity, User createBy = null)
+        public void Create<TEntity, TId>(TEntity entity, Guid? createBy = null)
             where TEntity : class, IBaseEntity<TId>
         {
             if (entity is IAuditable)
@@ -84,8 +97,8 @@ namespace Diploma.Data
 
                 if (createBy != null)
                 {
-                    auditableEntity.CreateBy = createBy.Id;
-                    auditableEntity.ModifyBy = createBy.Id;
+                    auditableEntity.CreateBy = createBy;
+                    auditableEntity.ModifyBy = createBy;
                 }
 
                 auditableEntity.CreateDate = DateTime.Now;
@@ -93,6 +106,21 @@ namespace Diploma.Data
             }
 
             this.Entry(entity).State = EntityState.Added;
+        }
+
+        public async Task DeleteAsync<TEntity>(TEntity entity, Guid? deleteBy = null) where TEntity : class
+        {
+            await Task.Run(() => this.Delete(entity, deleteBy));
+        }
+
+        public async Task ModifyAsync<TEntity>(TEntity entity, Guid? modifyBy = null) where TEntity : class
+        {
+            await Task.Run(() => this.Modify(entity, modifyBy));
+        }
+
+        public async Task CreateAsync<TEntity, TId>(TEntity entity, Guid? createBy = null) where TEntity : class, IBaseEntity<TId>
+        {
+            await Task.Run(() => this.Create<TEntity, TId>(entity, createBy));
         }
     }
 }

@@ -6,6 +6,7 @@ import './Common/CommonModule';
 
 import authorizeTemplate from './Pages/Authorize/AuthorizeView.html';
 import errorTemplate from './Pages/Error/ErrorView.html';
+import profileTemplate from './Pages/Profile/ProfileView.html'
 
 angular.module('main',
     [
@@ -28,6 +29,14 @@ angular.module('main',
             {
                 template: errorTemplate,
                 controller: 'errorController',
+                controllerAs: 'ctrl'
+            });
+
+        $routeProvider.when('/profile',
+            <ng.route.IRoute>
+            {
+                template: profileTemplate,
+                controller: 'profileController',
                 controllerAs: 'ctrl'
             });
     })

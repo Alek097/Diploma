@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MailKit" Version="1.16.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Diploma.Core\Diploma.Core.csproj" />
+    <ProjectReference Include="..\Diploma.Data\Diploma.Data.csproj" />
+    <ProjectReference Include="..\Diploma.Repositories\Diploma.Repositories.csproj" />
+  </ItemGroup>
+
+</Project>

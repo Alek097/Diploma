@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -14,10 +12,11 @@ using System.IO;
 using Diploma.Data.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Diploma.Data;
-using Diploma.Repositories.Interfaces;
 using Diploma.Repositories;
 using Diploma.Core.ConfigureModels;
-using Microsoft.AspNetCore.Identity;
+using Diploma.Repositories.Interfaces;
+using Diploma.BusinessLogic.Interfaces;
+using Diploma.BusinessLogic;
 
 namespace Diploma
 {
@@ -39,19 +38,38 @@ namespace Diploma
         public void ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
-            services.AddMvc();
+            services.AddMvc()
+                .AddJsonOptions(jsonOptions =>
+                {
+                    jsonOptions.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                });
 
             services.AddDbContext<ApplicationContext>();
 
-            services.AddIdentity<User, IdentityRole<Guid>>()
+            services.AddIdentity<User, Role>()
                 .AddEntityFrameworkStores<ApplicationContext, Guid>()
                 .AddDefaultTokenProviders();
 
             services.AddTransient<IContext, ApplicationContext>();
-            services.AddTransient<IAuthorizeRepository, AuthorizeRepository>();
+            services.AddTransient<IAddressRepository, AddressRepository>();
+            services.AddTransient<IBanRepository, BanRepository>();
+            services.AddTransient<ICategoryRepository, CategoryRepository>();
+            services.AddTransient<ICharacteristicRepository, CharacteristicRepository>();
+            services.AddTransient<ICharacteristicsGroupRepository, CharacteristicsGroupRepository>();
+            services.AddTransient<IOAuthStateRepository, OAuthStateRepository>();
+            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<ITokenRepository, TokenRepository>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IRoleRepository, RoleRepository>();
+            services.AddTransient<IEditEmailConfirmMessageRepository, EditEmailConfirmMessageRepository>();
+
+            services.AddTransient<IAuthorizeBusinessLogic, AuthorizeBusinessLogic>();
+            services.AddTransient<IProfileBussinessLogic, ProfileBussinessLogic>();
 
             services.Configure<List<OAuth>>(this.Configuration.GetSection("OAuth"));
             services.Configure<App>(this.Configuration.GetSection("App"));
+            services.Configure<Email>(this.Configuration.GetSection("Email"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
