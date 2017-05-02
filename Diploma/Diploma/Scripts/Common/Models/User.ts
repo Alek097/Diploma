@@ -10,6 +10,8 @@ export class User {
 
     public isAuthorize: boolean = false;
 
+    public role: string = 'User';
+
     public orders: Order[] = [];
 
     public addresses: Address[] = [];

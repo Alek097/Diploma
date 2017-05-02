@@ -16,11 +16,11 @@ namespace Diploma.Controllers
     [TypeFilter(typeof(ExceptionFilterAttribute))]
     public class AuthorizeController : Controller
     {
-        private readonly IAuthorizeBusinessLogic businessLogic;
+        private readonly IAuthorizeService businessLogic;
         private readonly ILogger<AuthorizeController> logger;
         private readonly App app;
 
-        public AuthorizeController(IAuthorizeBusinessLogic businessLogic, ILogger<AuthorizeController> logger, IOptions<App> app)
+        public AuthorizeController(IAuthorizeService businessLogic, ILogger<AuthorizeController> logger, IOptions<App> app)
         {
             this.businessLogic = businessLogic;
             this.logger = logger;

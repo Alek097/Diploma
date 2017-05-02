@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Diploma.BusinessLogic.Interfaces
 {
-    public interface IAuthorizeBusinessLogic : IDisposable
+    public interface IAuthorizeService : IDisposable
     {
         Task<string> GetRedirectUrl(string provider);
         Task<List<OAuthViewModel>> GetOAuthProviders();
