@@ -1,5 +1,6 @@
 ﻿import { User } from '../../Common/Models/User';
 import { Address } from '../../Common/Models/Address';
+import { Category } from '../../Common/Models/Category';
 import { ControllerResult } from '../../Core/ControllerResult';
 
 export class ProfileService {
@@ -34,7 +35,23 @@ export class ProfileService {
         return this._http.post('api/Profile/EditAddress', address);
     }
 
-    public getAddressId(): ng.IHttpPromise<string> {
+    public getId(): ng.IHttpPromise<string> {
         return this._http.get('api/Profile/GetId');
+    }
+
+    public getCategoriesNames(): ng.IHttpPromise<ControllerResult<Category[]>> {
+        return this._http.get('api/Category/GetNames');
+    }
+
+    public editCategory(category: Category): ng.IHttpPromise<ControllerResult<Category>> {
+        return this._http.post('api/Category/Edit', category);
+    }
+
+    public addCategory(category: Category): ng.IHttpPromise<ControllerResult<Category>> {
+        return this._http.post('api/Category/Add', category);
+    }
+
+    public deleteCategory(id: string): ng.IHttpPromise<ControllerResult<any>> {
+        return this._http.get('api/Category/Delete?id=' + id);
     }
 }

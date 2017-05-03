@@ -41,7 +41,7 @@ namespace Diploma
             services.AddMvc()
                 .AddJsonOptions(jsonOptions =>
                 {
-                    jsonOptions.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore;
+                    jsonOptions.SerializerSettings.NullValueHandling = Newtonsoft.Json.NullValueHandling.Include;
                 });
 
             services.AddDbContext<ApplicationContext>();
@@ -66,6 +66,7 @@ namespace Diploma
 
             services.AddTransient<IAuthorizeService, AuthorizeService>();
             services.AddTransient<IProfileService, ProfileService>();
+            services.AddTransient<ICategoryService, CategoryService>();
 
             services.Configure<List<OAuth>>(this.Configuration.GetSection("OAuth"));
             services.Configure<App>(this.Configuration.GetSection("App"));

@@ -197,11 +197,11 @@
 
                         <button class="btn btn-outline-primary" ng-click="ctrl.editAddress(address.id)">
                             <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
-                        </button> 
+                        </button>
 
                         <button class="btn btn-outline-danger" ng-click="ctrl.deleteAddress(address.id)">
                             <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
-                        </button> 
+                        </button>
 
                     </div>
                 </div>
@@ -210,6 +210,52 @@
             <button class="btn btn-outline-success" ng-click="ctrl.addAddrress()">
                 <i class="fa fa-2x fa-plus-circle" aria-hidden="true"></i>
             </button>
+        </div>
+    </div>
+    <hr />
+
+    <div ng-show="ctrl.oldUser.role != 'User'" id="profile--categories">
+        <div class="card card-outline-info text-center">
+            <div class="card-header card-info text-white">
+                <span class="card-title">Категории</span>
+            </div>
+            <div>
+                <div class="card-block text-center" ng-show="ctrl.isWaitCategories">
+                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                </div>
+
+                <div class="card-block text-center" ng-show="!(ctrl.isWaitCategories) && ctrl.categories.length === 0">
+                    <p class="h4">Увас нет категорий товаров, добавьте их прямо сейчас!</p><br />
+                    <button class="btn btn-outline-success" ng-click="ctrl.addCategory()">
+                        <i class="fa fa-2x fa-plus-circle" aria-hidden="true"></i>
+                    </button>
+                </div>
+
+                <div class="card-block text-center" ng-show="!(ctrl.isWaitCategories) && ctrl.categories.length > 0" id="profile--categories_container">
+
+                    <div class="card card-outline-secondary mb-2" ng-repeat="category in ctrl.categories">
+
+                        <div class="card-block">
+                            <p class="h3">{{category.name}}</p>
+                            <p class="h6">{{category.description}}</p>
+                        </div>
+                        <div class="card-footer text-center d-flex justify-content-around align-items-center flex-wrap">
+
+                            <a class="btn btn-primary text-white" href="#!/category/edit/{{category.id}}" role="button">
+                                <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+                            </a>
+                            <button class="btn btn-danger" ng-click="ctrl.deleteCategory(category.id)">
+                                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <button class="btn btn-outline-success" ng-click="ctrl.addCategory()">
+                        <i class="fa fa-2x fa-plus-circle" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
