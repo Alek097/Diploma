@@ -31,21 +31,31 @@ namespace Diploma.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<ControllerResult<CategoryViewModel>> Add([FromBody]CategoryViewModel category)
         {
             return await this.categoryService.AddCategory(this.User.Identity.Name, category);
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<ControllerResult<CategoryViewModel>> Edit([FromBody]CategoryViewModel category)
         {
-            throw new NotImplementedException();
+            return await this.categoryService.EditCategoty(this.User.Identity.Name, category);
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<ControllerResult> Delete(string id)
         {
             return await this.categoryService.DeleteCategory(this.User.Identity.Name, id);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Administrator,Moderator")]
+        public async Task<ControllerResult<CategoryViewModel>> GetCategoryById(string id)
+        {
+            return await this.categoryService.GetCategoryById(id);
         }
     }
 }

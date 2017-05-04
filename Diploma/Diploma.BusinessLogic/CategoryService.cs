@@ -76,7 +76,7 @@ namespace Diploma.BusinessLogic
             {
                 Category deleteCategory = this.categoryRepository.Get(Guid.Parse(id));
 
-                if(deleteCategory == null)
+                if (deleteCategory == null)
                 {
                     return new ControllerResult()
                     {
@@ -97,6 +97,90 @@ namespace Diploma.BusinessLogic
                     };
                 }
             }
+        }
+
+        public async Task<ControllerResult<CategoryViewModel>> EditCategoty(string name, CategoryViewModel category)
+        {
+            User current = this.userRepository.Get()
+                .FirstOrDefault((u) => u.UserName == name);
+
+            if (current == null)
+            {
+                return new ControllerResult<CategoryViewModel>()
+                {
+                    IsSuccess = false,
+                    Status = 404,
+                    Message = "Пользователь не найден. Попробуйте перезагрузить страницу или войти сново."
+                };
+            }
+            else
+            {
+                Category editCategory = this.categoryRepository.Get( Guid.Parse(category.Id));
+
+                if (editCategory == null)
+                {
+                    return new ControllerResult<CategoryViewModel>()
+                    {
+                        IsSuccess = false,
+                        Status = 404,
+                        Message = "Категория не найдена. Перезагрузите страницу"
+                    };
+                }
+                else
+                {
+                    editCategory.Name = category.Name;
+                    editCategory.Description = category.Description;
+
+                    this.categoryRepository.Modify(editCategory, current.Id);
+
+                    await this.categoryRepository.SaveChangesAsync();
+
+                    return new ControllerResult<CategoryViewModel>()
+                    {
+                        IsSuccess = true,
+                        Status = 200,
+                        Value = category
+                    };
+                }
+            }
+        }
+
+        public async Task<ControllerResult<CategoryViewModel>> GetCategoryById(string id)
+        {
+            Category category = await this.categoryRepository.GetAsync(Guid.Parse(id));
+
+            return new ControllerResult<CategoryViewModel>()
+            {
+                IsSuccess = true,
+                Status = 200,
+                Value = new CategoryViewModel()
+                {
+                    Id = category.Id.ToString(),
+                    Description = category.Description,
+                    Name = category.Name,
+                    Products = category.Products.Select((prod) => new ProductViewModel()
+                    {
+                        Name = prod.Name,
+                        Price = prod.Price,
+                        PhotoPath = prod.PhotoPath,
+                        Description = prod.Description,
+                        Characteristics = prod.Characteristics.Select(character => new CharacteristicViewModel()
+                        {
+                            Name = character.Name,
+                            Value = character.Value
+                        }),
+                        CharacteristicsGroups = prod.CharacteristicsGroups.Select(chg => new CharacteristicsGroupViewModel()
+                        {
+                            Name = chg.Name,
+                            Characteristics = prod.Characteristics.Select(character => new CharacteristicViewModel()
+                            {
+                                Name = character.Name,
+                                Value = character.Value
+                            }),
+                        })
+                    })
+                }
+            };
         }
 
         public async Task<ControllerResult<IEnumerable<CategoryViewModel>>> GetCategoryNames()

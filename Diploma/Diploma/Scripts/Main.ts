@@ -7,6 +7,7 @@ import './Common/CommonModule';
 import authorizeTemplate from './Pages/Authorize/AuthorizeView.html';
 import errorTemplate from './Pages/Error/ErrorView.html';
 import profileTemplate from './Pages/Profile/ProfileView.html'
+import editCategoryTemplate from './Pages/EditCategory/EditCategoryView.html';
 
 angular.module('main',
     [
@@ -37,6 +38,14 @@ angular.module('main',
             {
                 template: profileTemplate,
                 controller: 'profileController',
+                controllerAs: 'ctrl'
+            });
+
+        $routeProvider.when('/category/edit/:id',
+            <ng.route.IRoute>
+            {
+                template: editCategoryTemplate,
+                controller: 'editCategoryController',
                 controllerAs: 'ctrl'
             });
     })

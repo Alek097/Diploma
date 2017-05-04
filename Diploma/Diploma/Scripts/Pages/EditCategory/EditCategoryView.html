@@ -1,0 +1,44 @@
+﻿<div class="container-fluid" id="category">
+    <hr />
+    <div class="row text-center">
+        <div class="col-12">
+            <p class="h2">
+                {{ctrl.category.name}}
+            </p>
+        </div>
+        <div class="col-12">
+            <p>
+                {{ctrl.category.description}}
+            </p>
+            <hr />
+        </div>
+        <div class="col-12 d-flex justify-content-around align-items-center flex-wrap">
+            <button class="btn btn-outline-primary" ng-click="ctrl.editCategory()">
+                <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+            </button>
+
+            <button class="btn btn-outline-danger" ng-click="ctrl.deleteCategory()">
+                <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+    <hr />
+
+    <div id="category--products">
+        <div class="card card-outline-info text-center">
+            <div class="card-header card-info text-white">
+                <span class="card-title">Товары</span>
+            </div>
+            <div>
+                <div class="card-block text-center" ng-show="ctrl.category.products.length == 0">
+                    <p>
+                        В категории нет товаров. Добавьте прямо сейчас!
+                    </p>
+                    <button class="btn btn-outline-success">
+                        <i class="fa fa-2x fa-plus-circle" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
