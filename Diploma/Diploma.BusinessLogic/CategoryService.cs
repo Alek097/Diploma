@@ -115,7 +115,7 @@ namespace Diploma.BusinessLogic
             }
             else
             {
-                Category editCategory = this.categoryRepository.Get( Guid.Parse(category.Id));
+                Category editCategory = this.categoryRepository.Get(Guid.Parse(category.Id));
 
                 if (editCategory == null)
                 {
@@ -158,21 +158,32 @@ namespace Diploma.BusinessLogic
                     Id = category.Id.ToString(),
                     Description = category.Description,
                     Name = category.Name,
-                    Products = category.Products.Select((prod) => new ProductViewModel()
+                    Products = category.Products
+                    .Where(prod => !(prod.IsDeleted))
+                    .Select((prod) => new ProductViewModel()
                     {
+                        Id = prod.Id.ToString(),
                         Name = prod.Name,
                         Price = prod.Price,
-                        PhotoPath = prod.PhotoPath,
                         Description = prod.Description,
-                        Characteristics = prod.Characteristics.Select(character => new CharacteristicViewModel()
+                        ImagesUrl = prod.Images.Select(img => img.Url),
+                        CoverUrl = prod.CoverUrl,
+
+                        Characteristics = prod.Characteristics
+                        .Where(charc => !(charc.IsDeleted))
+                        .Select(character => new CharacteristicViewModel()
                         {
                             Name = character.Name,
                             Value = character.Value
                         }),
-                        CharacteristicsGroups = prod.CharacteristicsGroups.Select(chg => new CharacteristicsGroupViewModel()
+                        CharacteristicsGroups = prod.CharacteristicsGroups
+                        .Where(chg => !(chg.IsDeleted))
+                        .Select(chg => new CharacteristicsGroupViewModel()
                         {
                             Name = chg.Name,
-                            Characteristics = prod.Characteristics.Select(character => new CharacteristicViewModel()
+                            Characteristics = prod.Characteristics
+                            .Where(charc => !(charc.IsDeleted))
+                            .Select(character => new CharacteristicViewModel()
                             {
                                 Name = character.Name,
                                 Value = character.Value

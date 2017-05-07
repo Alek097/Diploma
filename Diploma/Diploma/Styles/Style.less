@@ -177,8 +177,67 @@ body {
 }
 
 #category {
-    #category--products{
+    #category--products {
+        .category--products_item {
+            max-width: 300px;
 
+            .card-img-top {
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+}
+
+#product {
+    #product--cover {
+        .card {
+            width: 100%;
+
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+
+    #product--images {
+        .card {
+            width: 300px;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    #product--characteristics {
+        .row {
+            width: 380px;
+
+            @media(max-width: 400px) {
+                width: 100%;
+            }
+        }
+
+        .product--characteristics_item {
+            .col-4 {
+                padding: 0px;
+
+                &:nth-child(1) {
+                    padding-right: 2px;
+                }
+            }
+        }
+    }
+
+    #product--characteristicsGroups {
+        width: 100%;
+
+        .product--characteristicsGroups_item {
+            width: 100%;
+        }
     }
 }
 
@@ -194,4 +253,60 @@ body {
 .inputValidError, .inputValidSucces {
     transition-property: background-color;
     color: white;
+}
+
+.file_upload {
+    position: relative;
+    overflow: hidden;
+}
+
+.file_upload > button {
+    float: right;
+    height: 100%
+}
+
+
+.file_upload input[type=file] {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    transform: scale(20);
+    letter-spacing: 10em;
+    -ms-transform: scale(20);
+    opacity: 0;
+    cursor: pointer
+}
+
+.file_upload {
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    transition: box-shadow 0.1s linear
+}
+
+.file_upload.focus {
+    box-shadow: 0 0 5px rgba(0,30,255,0.4)
+}
+
+.file_upload > button {
+    background-color: transparent;
+    transition: background 0.2s;
+    transition: color 0.2s;
+    border: 1px solid rgba(0,0,0,0.1);
+    border-color: @successColor;
+    border-radius: 2px;
+    color: @successColor;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis
+}
+
+.file_upload:hover > button {
+    background: @successColor;
+    color: white;
+}
+
+.file_upload:active > button {
+    background: @successColor;
 }

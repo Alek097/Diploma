@@ -3,6 +3,7 @@ import { WaitModalService } from '../../Common/WaitModal/WaitModalService';
 import { ErrorModalService } from '../../Common/ErrorModal/ErrorModalService';
 import { Category } from '../../Common/Models/Category';
 import { EditCategoryModalService } from '../Profile/EditCategoryModal/EditCategoryModalService';
+import { MainService } from '../../MainService';
 
 export class EditCategoryController {
     public static $inject: string[] =
@@ -11,7 +12,9 @@ export class EditCategoryController {
         '$routeParams',
         'waitModalService',
         'errorModalService',
-        'editCategoryModalService'
+        'editCategoryModalService',
+        'mainService',
+        '$timeout'
     ]
 
     public category: Category = null;
@@ -21,23 +24,38 @@ export class EditCategoryController {
         params: ng.route.IRouteParamsService,
         private _waitModalService: WaitModalService,
         private _errorModalService: ErrorModalService,
-        private _editCategoryModalService: EditCategoryModalService) {
+        private _editCategoryModalService: EditCategoryModalService,
+        mainService: MainService,
+        private _timeout: ng.ITimeoutService) {
         let id: string = params['id'];
 
         this._waitModalService.show();
 
-        this._editCategoryService.getCategory(id)
+        mainService.getUser()
             .then(response => {
-                if (response.data.isSuccess) {
-                    this.category = response.data.value;
-                    this._waitModalService.close();
+                if (response.data.isSuccess && response.data.value.role != 'User') {
+                    this._editCategoryService.getCategory(id)
+                        .then(response => {
+                            if (response.data.isSuccess) {
+                                this.category = response.data.value;
+                                this._waitModalService.close();
+                            }
+                            else {
+                                this._errorModalService.show(response.data.status, response.data.message);
+                            }
+                        },
+                        response => {
+                            this._errorModalService.show(response.status, 'Неизвестная ошибка. Но мы уже о ней знаем');
+                        })
                 }
                 else {
                     this._errorModalService.show(response.data.status, response.data.message);
+                    location.href = '/'
                 }
             },
             response => {
                 this._errorModalService.show(response.status, 'Неизвестная ошибка. Но мы уже о ней знаем');
+                location.href = '/'
             })
     }
 
@@ -62,6 +80,29 @@ export class EditCategoryController {
             .then(response => {
                 if (response.data.isSuccess) {
                     location.href = '#!/profile';
+                }
+                else {
+                    this._errorModalService.show(response.data.status, response.data.message);
+                }
+            },
+            response => {
+                this._errorModalService.show(response.status, 'Неизвестная ошибка. Но мы уже о ней знаем');
+            });
+    }
+
+    public deleteProduct(id: string) {
+        this._editCategoryService.deleteProduct(id)
+            .then(response => {
+                if (response.data.isSuccess) {
+                    for (var i = 0; i < this.category.products.length; i++) {
+                        if (this.category.products[i].id === id) {
+                            this.category.products.splice(i, 1);
+
+                            this._timeout();
+
+                            break;
+                        }
+                    }
                 }
                 else {
                     this._errorModalService.show(response.data.status, response.data.message);

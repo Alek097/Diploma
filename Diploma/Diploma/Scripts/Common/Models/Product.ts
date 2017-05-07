@@ -2,15 +2,19 @@
 import { CharacteristicsGroup } from './CharacteristicsGroup';
 
 export class Product {
+    public id: string = null;
+
     public name: string = null;
 
     public description: string = null;
 
-    public photoPath: string = null;
+    public coverUrl: string = null;
+
+    public imagesUrl: string[] = [];
 
     public price: number = null;
 
-    public CharacteristicsGroups: CharacteristicsGroup[] = [];
+    public characteristicsGroups: CharacteristicsGroup[] = [];
 
-    public Characteristics: Characteristic[] = [];
+    public characteristics: Characteristic[] = [];
 }

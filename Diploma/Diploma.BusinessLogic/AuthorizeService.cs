@@ -266,8 +266,9 @@ namespace Diploma.BusinessLogic
                         {
                             Name = product.Name,
                             Description = product.Description,
-                            PhotoPath = product.PhotoPath,
                             Price = product.Price,
+                            ImagesUrl = product.Images.Select(img=>img.Url),
+                            CoverUrl = product.CoverUrl,
 
                             Characteristics = product.Characteristics.Select(characteristics => new CharacteristicViewModel()
                             {

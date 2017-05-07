@@ -30,13 +30,33 @@
                 <span class="card-title">Товары</span>
             </div>
             <div>
-                <div class="card-block text-center" ng-show="ctrl.category.products.length == 0">
-                    <p>
-                        В категории нет товаров. Добавьте прямо сейчас!
-                    </p>
-                    <button class="btn btn-outline-success">
+                <div class="card-block text-center">
+                    <div ng-show="ctrl.category.products.length == 0">
+                        <p>
+                            В категории нет товаров. Добавьте прямо сейчас!
+                        </p>
+                    </div>
+
+                    <div ng-show="ctrl.category.products.length > 0" class="d-flex justify-content-around align-items-center flex-wrap">
+                        <div class="card category--products_item mr-2 mb-2" ng-repeat="product in ctrl.category.products">
+                            <img class="card-img-top" src="{{product.coverUrl}}" alt="Card image cap">
+                            <div class="card-block">
+                                <h4 class="card-title">{{product.name}}</h4>
+                            </div>
+                            <div class="card-footer d-flex justify-content-around align-items-center flex-wrap">
+                                <a class="btn btn-primary text-white" href="#!/product/edit/{{product.id}}/{{ctrl.category.id}}">
+                                    <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+                                </a>
+                                <button class="btn btn-danger" ng-click="ctrl.deleteProduct(product.id)">
+                                    <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a class="btn btn-success text-white" href="#!/product/edit/*/{{ctrl.category.id}}">
                         <i class="fa fa-2x fa-plus-circle" aria-hidden="true"></i>
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

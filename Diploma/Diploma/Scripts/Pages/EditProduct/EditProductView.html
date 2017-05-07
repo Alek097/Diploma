@@ -1,0 +1,149 @@
+﻿<div class="container mb-1" id="product">
+    <form name="productForm">
+        <hr />
+        <p class="h2">Обложка:</p>
+        <div class="d-flex justify-content-start align-items-center" id="product--cover">
+            <div class="file_upload" ng-show="ctrl.product.coverUrl == null">
+                <button class="btn btn-outline-success">
+                    <i class="fa fa-2x fa-plus-circle" aria-hidden="true"></i>
+                </button>
+                <input required type="file" multiple accept="image/*" name="cover" onchange="angular.element(this).controller().uploadCover()">
+            </div>
+            <div ng-show="ctrl.product.coverUrl != null" class="card">
+                <img class="card-img-top" src="{{ctrl.product.coverUrl}}" alt="Card image cap">
+                <div class="card-footer d-flex justify-content-around align-items-center">
+                    <button class="btn btn-outline-danger" ng-click="ctrl.deleteCover()">
+                        <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <p class="h2">Название:</p>
+        <input required type="text" name="name" ng-model="ctrl.product.name" class="form-control" />
+        <hr />
+        <p class="h2">Описание:</p>
+        <textarea required name="description" ng-model="ctrl.product.description" class="form-control"></textarea>
+        <hr />
+        <p class="h2">Цена:</p>
+        <input required type="text" name="price" ng-model="ctrl.product.price" class="form-control" />
+        <hr />
+        <p class="h2">Изображения:</p>
+        <div class="d-flex justify-content-start align-items-center" id="product--images">
+
+            <div class="file_upload" ng-show="ctrl.product.imagesUrl.length == 0">
+                <button class="btn btn-outline-success">
+                    <i class="fa fa-2x fa-plus-circle" aria-hidden="true"></i>
+                </button>
+                <input required type="file" multiple accept="image/*" name="images" onchange="angular.element(this).controller().uploadImages()">
+            </div>
+
+            <div ng-show="ctrl.product.imagesUrl.length > 0" class="d-flex justify-content-start align-items-center flex-wrap">
+                <div class="card mb-2 mr-2" ng-repeat="imageUrl in ctrl.product.imagesUrl">
+                    <img class="card-img-top" src="{{imageUrl}}" alt="Card image cap">
+                    <div class="card-footer d-flex justify-content-around align-items-center">
+                        <button class="btn btn-outline-danger" ng-click="ctrl.deleteImage(imageUrl)">
+                            <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <p class="h2">Характеристики:</p>
+        <div class="d-flex justify-content-start align-items-start flex-column" id="product--characteristics">
+            <div class="row text-center" ng-show="ctrl.product.characteristics.length > 0">
+                <div class="col-4">
+                    <p><strong>Имя</strong></p>
+                </div>
+                <div class="col-4">
+                    <p><strong>Значение</strong></p>
+                </div>
+                <div class="col-4"></div>
+            </div>
+            <div class="row product--characteristics_item mb-1" ng-repeat="characteristic in ctrl.product.characteristics">
+                <div class="col-4">
+                    <input type="text" class="form-control" required ng-model="characteristic.name" />
+                </div>
+                <div class="col-4">
+                    <input type="text" class="form-control" required ng-model="characteristic.value" />
+                </div>
+                <div class="col-4 pl-1 text-center">
+                    <button class="btn btn-outline-danger" ng-click="ctrl.deleteCharacteristic(characteristic.id)">
+                        <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+            <button class="btn btn-outline-success" ng-click="ctrl.addCharacteristic()">
+                <i class="fa fa-2x fa-plus-circle" aria-hidden="true"></i>
+            </button>
+        </div>
+        <hr />
+        <p class="h2">Групповые характеристики</p>
+        <div class="d-flex justify-content-start align-items-start flex-column" id="product--characteristics">
+
+            <div class="mb-1" ng-show="ctrl.product.characteristicsGroups.length > 0" id="product--characteristicsGroups">
+                <div class="d-flex justify-content-start align-items-start flex-column product--characteristicsGroups_item" ng-repeat="characteristicsGroup in ctrl.product.characteristicsGroups">
+                    <div>
+                        <hr ng-show="!($first)" />
+                        <strong>Название</strong>
+                        <input type="text" class="form-control" required ng-model="characteristicsGroup.name" />
+                        <button class="btn btn-outline-danger mt-1" ng-click="ctrl.deleteCharacteristicsGroup(characteristicsGroup.id)">
+                            <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="d-flex justify-content-start align-items-start flex-column ml-5">
+                        <div class="row text-center">
+                            <div class="col-4">
+                                <p><strong>Имя</strong></p>
+                            </div>
+                            <div class="col-4">
+                                <p><strong>Значение</strong></p>
+                            </div>
+                            <div class="col-4"></div>
+                        </div>
+
+                        <div class="row product--characteristics_item mb-1" ng-repeat="characteristicInGroup in characteristicsGroup.characteristics">
+                            <div class="col-4">
+                                <input type="text" class="form-control" required ng-model="characteristicInGroup.name" />
+                            </div>
+                            <div class="col-4">
+                                <input type="text" class="form-control" required ng-model="characteristicInGroup.value" />
+                            </div>
+                            <div class="col-4 pl-1 text-center">
+                                <button class="btn btn-outline-danger" ng-click="ctrl.deleteCharacteristicFromGroup(characteristicInGroup.id, characteristicsGroup.id)">
+                                    <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button class="btn btn-outline-success" ng-click="ctrl.addCharacteristicInGroup(characteristicsGroup.id)">
+                                <i class="fa fa-2x fa-plus-circle" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <hr />
+                </div>
+            </div>
+            <button class="btn btn-outline-success" ng-click="ctrl.addCharacteristicGroup()">
+                <i class="fa fa-2x fa-plus-circle" aria-hidden="true"></i>
+            </button>
+        </div>
+        <hr />
+        <button class="btn btn-outline-success"
+                ng-disabled="ctrl.product.coverUrl == null
+                || ctrl.product.imagesUrl.length === 0
+                || productForm.name.$invalid
+                || productForm.description.$invalid
+                || productForm.price.$invalid"
+                ng-click="ctrl.save()">
+            <strong>
+                Сохранить
+            </strong>
+        </button>
+        <hr />
+    </form>
+</div>

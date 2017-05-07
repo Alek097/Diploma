@@ -27,6 +27,9 @@ export class MainController {
         this._mainService.getUser()
             .then((responce) => {
                 this.user = responce.data.value;
+
+                Global.changeUser(this.user);
+
                 Global.onChangeUser.push((user: User) => this.user = user);
 
                 if (!(responce.data.isSuccess)) {

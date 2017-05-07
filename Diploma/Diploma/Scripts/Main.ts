@@ -8,6 +8,7 @@ import authorizeTemplate from './Pages/Authorize/AuthorizeView.html';
 import errorTemplate from './Pages/Error/ErrorView.html';
 import profileTemplate from './Pages/Profile/ProfileView.html'
 import editCategoryTemplate from './Pages/EditCategory/EditCategoryView.html';
+import editProductTemplate from './Pages/EditProduct/EditProductView.html';
 
 angular.module('main',
     [
@@ -46,6 +47,13 @@ angular.module('main',
             {
                 template: editCategoryTemplate,
                 controller: 'editCategoryController',
+                controllerAs: 'ctrl'
+            });
+        $routeProvider.when('/product/edit/:productId/:categoryId',
+            <ng.route.IRoute>
+            {
+                template: editProductTemplate,
+                controller: 'editProductController',
                 controllerAs: 'ctrl'
             });
     })

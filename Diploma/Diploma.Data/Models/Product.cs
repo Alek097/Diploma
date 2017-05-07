@@ -9,7 +9,7 @@ namespace Diploma.Data.Models
 
         public string Description { get; set; }
 
-        public string PhotoPath { get; set; }
+        public string CoverUrl { get; set; }
 
         public decimal Price { get; set; }
 
@@ -17,10 +17,13 @@ namespace Diploma.Data.Models
 
         public virtual ICollection<Characteristic> Characteristics { get; set; }
 
+        public virtual ICollection<Image> Images { get; set; }
+
         public Product()
         {
             this.CharacteristicsGroups = new List<CharacteristicsGroup>();
             this.Characteristics = new List<Characteristic>();
+            this.Images = new List<Image>();
             this.Id = Guid.NewGuid();
         }
     }
