@@ -1,8 +1,9 @@
-﻿import { Address } from '../../../Common/Models/Address';
+﻿import { Category } from '../../../Common/Models/Category';
 import { ProfileService } from '../ProfileService';
 import { ErrorModalService } from '../../../Common/ErrorModal/ErrorModalService';
 
-export class EditAddressModalController {
+
+export class EditCategoryModalController {
     public static $inject: string[] = [
         '$scope',
         'profileService',
@@ -15,33 +16,33 @@ export class EditAddressModalController {
         private _scope: any,
         private _profileService: ProfileService,
         private _errorModalService: ErrorModalService) {
-        let address: Address = _scope.address;
+        let category: Category = this._scope.category;
 
-        this._scope.newAddress = new Address();
+        this._scope.newCategory = new Category();
         this._scope.isWaitEdit = false;
 
-        if (address.id == null) {
+        if (category.id == null) {
             this._scope.isWait = true;
 
             this._isEdit = false;
 
             this._profileService.getId()
                 .then((response) => {
-                    let address: Address = new Address();
-                    address.id = response.data;
+                    let category: Category = new Category();
+                    category.id = response.data;
 
-                    this._setAddress(address);
+                    this._setCategory(category);
 
                     this._scope.isWait = false;
                 },
                 (response) => {
                     this._errorModalService.show(response.status, 'Неизвестная ошибка. Мы уже знаем о ней всё.');
                     this._scope.isWait = false;
-                })
+                });
         }
         else {
             this._isEdit = true;
-            this._setAddress(this._scope.address);
+            this._setCategory(this._scope.category);
         }
     }
 
@@ -49,7 +50,7 @@ export class EditAddressModalController {
         this._scope.isWaitEdit = true;
 
         if (this._isEdit) {
-            this._profileService.editAddress(this._scope.newAddress)
+            this._profileService.editCategory(this._scope.newCategory)
                 .then((response) => {
                     if (response.data.isSuccess) {
                         this._scope.callback(response.data.value, true);
@@ -66,9 +67,8 @@ export class EditAddressModalController {
                     this._scope.isWaitEdit = false;
                 });
         }
-        else
-        {
-            this._profileService.addAddress(this._scope.newAddress)
+        else {
+            this._profileService.addCategory(this._scope.newCategory)
                 .then((response) => {
                     if (response.data.isSuccess) {
                         this._scope.callback(response.data.value, true);
@@ -88,14 +88,14 @@ export class EditAddressModalController {
     }
 
     public close(): void {
-        this._scope.callback(this._scope.address, false);
+        this._scope.callback(this._scope.category, false);
 
         this._scope.closeModal();
     }
 
-    private _setAddress(address: Address): void {
-        for (let i in address) {
-            this._scope.newAddress[i] = address[i];
+    private _setCategory(category: Category): void {
+        for (let i in category) {
+            this._scope.newCategory[i] = category[i];
         }
     }
 }

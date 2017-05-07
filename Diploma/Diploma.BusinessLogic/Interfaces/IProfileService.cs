@@ -4,7 +4,7 @@ using Diploma.Core.ViewModels;
 
 namespace Diploma.BusinessLogic.Interfaces
 {
-    public interface IProfileBussinessLogic
+    public interface IProfileService
     {
         Task<ControllerResult> SendConfirmEditEmail(string userName, string newEmail);
         Task<ControllerResult<string>> EditEmail(string code, string newEmail, string userName);

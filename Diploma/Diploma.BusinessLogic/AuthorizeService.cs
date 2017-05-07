@@ -19,7 +19,7 @@ using System.Threading.Tasks;
 
 namespace Diploma.BusinessLogic
 {
-    public class AuthorizeBusinessLogic : IAuthorizeBusinessLogic
+    public class AuthorizeService : IAuthorizeService
     {
         private static bool isRoleCreated = false;
 
@@ -33,7 +33,7 @@ namespace Diploma.BusinessLogic
 
         private const string url = "api/Authorize/SetCode";
 
-        public AuthorizeBusinessLogic(
+        public AuthorizeService(
             IUserRepository userRepository,
             IOAuthStateRepository oauthStateRepository,
             IRoleRepository roleRepository,
@@ -266,8 +266,9 @@ namespace Diploma.BusinessLogic
                         {
                             Name = product.Name,
                             Description = product.Description,
-                            PhotoPath = product.PhotoPath,
                             Price = product.Price,
+                            ImagesUrl = product.Images.Select(img=>img.Url),
+                            CoverUrl = product.CoverUrl,
 
                             Characteristics = product.Characteristics.Select(characteristics => new CharacteristicViewModel()
                             {

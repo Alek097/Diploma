@@ -19,6 +19,7 @@ namespace Diploma.Repositories
             return base.context.Products
                 .Include(p => p.CharacteristicsGroups)
                 .Include(p => p.Characteristics)
+                .Include(p => p.Images)
                 .ToList();
         }
     }

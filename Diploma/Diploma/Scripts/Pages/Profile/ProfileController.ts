@@ -7,6 +7,8 @@ import { MessageModalService } from '../../Common/MessageModal/MessageModalServi
 import { Global } from '../../Core/Global';
 import { EditAddressModalService } from './EditAddressModal/EditAddressModalService';
 import { Address } from '../../Common/Models/Address';
+import { Category } from '../../Common/Models/Category';
+import { EditCategoryModalService } from './EditCategoryModal/EditCategoryModalService';
 
 export class ProfileController {
     public static $inject: string[] =
@@ -17,15 +19,19 @@ export class ProfileController {
         'errorModalService',
         '$scope',
         'messageModalService',
-        'editAddressModalService'
+        'editAddressModalService',
+        'editCategoryModalService'
     ];
 
     public oldUser: User;
 
     public newUser: User;
 
+    public categories: Category[] = [];
+
     public isEditEmail: boolean = false;
     public showConfirmCard: boolean = false;
+    public isWaitCategories: boolean = false;
 
     constructor(
         private _profileService: ProfileService,
@@ -34,28 +40,56 @@ export class ProfileController {
         private _errorModalService: ErrorModalService,
         private _scope: any,
         private _messageModalService: MessageModalService,
-        private _editAddressModalService: EditAddressModalService
+        private _editAddressModalService: EditAddressModalService,
+        private _editCategoryModalService: EditCategoryModalService
     ) {
         waitModalService.show();
 
         mainService.getUser()
-            .then((responce) => {
+            .then((response) => {
 
-                if (responce.data.value.isAuthorize) {
-                    this.oldUser = responce.data.value;
+                if (response.data.value.isAuthorize) {
+                    this.oldUser = response.data.value;
 
                     this._automapUser();
 
                     this._setScope();
+
+                    if (response.data.value.role !== 'User') {
+
+                        this.isWaitCategories = true;
+
+                        this._profileService.getCategoriesNames()
+                            .then((response) => {
+                                if (response.data.isSuccess) {
+                                    this.categories = response.data.value;
+                                }
+                                else {
+                                    this._errorModalService.show(response.data.status, 'Ошибка сервера. Повторите попытку позже.');
+                                }
+
+                                this.isWaitCategories = false;
+                                waitModalService.close();
+                            },
+                            (response) => {
+                                this._errorModalService.show(response.status, 'Ошибка сервера. Повторите попытку позже.');
+
+                                this.isWaitCategories = false;
+                                waitModalService.close();
+                            });
+                    }
+                    else {
+                        this._errorModalService.show(response.data.status, 'Ошибка сервера. Повторите попытку позже.');
+                        waitModalService.close();
+                    }
                 }
                 else {
+                    waitModalService.close();
                     location.href = '/';
                 }
-
-                waitModalService.close();
             },
-            () => {
-                this._errorModalService.show(500, 'Ошибка сервера. Повторите попытку позже.');
+            (response) => {
+                this._errorModalService.show(response.status, 'Ошибка сервера. Повторите попытку позже.');
                 location.href = '/';
 
                 waitModalService.close();
@@ -138,6 +172,29 @@ export class ProfileController {
                 for (var i = 0; i < this.oldUser.addresses.length; i++) {
                     if (this.oldUser.addresses[i].id == id) {
                         this.oldUser.addresses.splice(i, 1);
+                        break;
+                    }
+                }
+            },
+            (responce) => {
+                this._errorModalService.show(responce.status, 'Неизвестная ошибка. Но мы уже о ней знаем')
+            });
+    }
+
+    public addCategory(): void {
+        this._editCategoryModalService.show(new Category(), (category, isOk) => {
+            if (isOk) {
+                this.categories.push(category);
+            }
+        });
+    }
+
+    public deleteCategory(categoryId: string): void {
+        this._profileService.deleteCategory(categoryId)
+            .then((responce) => {
+                for (var i = 0; i < this.categories.length; i++) {
+                    if (this.categories[i].id == categoryId) {
+                        this.categories.splice(i, 1);
                         break;
                     }
                 }

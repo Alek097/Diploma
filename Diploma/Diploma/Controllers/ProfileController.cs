@@ -15,9 +15,9 @@ namespace Diploma.Controllers
     [TypeFilter(typeof(ExceptionFilterAttribute))]
     public class ProfileController : Controller
     {
-        private readonly IProfileBussinessLogic profile;
+        private readonly IProfileService profile;
 
-        public ProfileController(IProfileBussinessLogic profile)
+        public ProfileController(IProfileService profile)
         {
             this.profile = profile;
         }

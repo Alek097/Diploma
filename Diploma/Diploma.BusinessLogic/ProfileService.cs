@@ -15,18 +15,18 @@ using Diploma.Core.ViewModels;
 
 namespace Diploma.BusinessLogic
 {
-    public class ProfileBussinessLogic : IProfileBussinessLogic
+    public class ProfileService : IProfileService
     {
         private readonly IUserRepository userRepository;
         private readonly IEditEmailConfirmMessageRepository editEmailConfirmMessageRepository;
-        private readonly ILogger<ProfileBussinessLogic> logger;
+        private readonly ILogger<ProfileService> logger;
         private readonly Email email;
         private readonly IAddressRepository addressRepository;
 
-        public ProfileBussinessLogic(
+        public ProfileService(
             IUserRepository userRepository,
             IEditEmailConfirmMessageRepository editEmailConfirmMessageRepository,
-            ILogger<ProfileBussinessLogic> logger,
+            ILogger<ProfileService> logger,
             IOptions<Email> email,
             IAddressRepository addressRepository)
         {
