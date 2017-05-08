@@ -241,6 +241,56 @@ body {
     }
 }
 
+#home {
+
+    #home--products {
+
+        @media(max-width: 800px) {
+            padding: 0px;
+        }
+
+        .home--products_item {
+            max-width: 380px;
+
+            @media(max-width: 800px) {
+                max-width: 100%;
+            }
+
+            .home--products_item-description {
+                height: 300px;
+                overflow-y: scroll;
+            }
+
+            .home--products_item-cover {
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+
+    #home--categories {
+
+        .home--categories_item {
+            cursor: pointer;
+
+            &:hover {
+                background-color: #f3eded;
+            }
+
+            p {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        .active {
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+        }
+    }
+}
+
 .inputValidSucces {
     background-color: @successColor;
     color: white;

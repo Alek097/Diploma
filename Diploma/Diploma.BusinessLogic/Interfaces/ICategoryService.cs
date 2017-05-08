@@ -12,5 +12,6 @@ namespace Diploma.BusinessLogic.Interfaces
         Task<ControllerResult> DeleteCategory(string name, string id);
         Task<ControllerResult<CategoryViewModel>> GetCategoryById(string id);
         Task<ControllerResult<CategoryViewModel>> EditCategoty(string name, CategoryViewModel category);
+        Task<ControllerResult<IEnumerable<CategoryViewModel>>> GetCategories();
     }
 }

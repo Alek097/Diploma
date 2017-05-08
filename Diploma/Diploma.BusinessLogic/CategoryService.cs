@@ -145,6 +145,36 @@ namespace Diploma.BusinessLogic
             }
         }
 
+        public async Task<ControllerResult<IEnumerable<CategoryViewModel>>> GetCategories()
+        {
+            IEnumerable<Category> categories = await this.categoryRepository.GetAsync();
+
+            return new ControllerResult<IEnumerable<CategoryViewModel>>()
+            {
+                IsSuccess = true,
+                Status = 200,
+                Value = categories
+                .Where(category => !(category.IsDeleted))
+                .Select(category => new CategoryViewModel()
+                {
+                    Id = category.Id.ToString(),
+                    Name = category.Name,
+                    Description = category.Description,
+
+                    Products = category.Products
+                    .Where(product => !(product.IsDeleted))
+                    .Select(product => new ProductViewModel()
+                    {
+                        Id = product.Id.ToString(),
+                        CoverUrl = product.CoverUrl,
+                        Description = product.Description,
+                        Name = product.Name,
+                        Price = product.Price
+                    })
+                })
+            };
+        }
+
         public async Task<ControllerResult<CategoryViewModel>> GetCategoryById(string id)
         {
             Category category = await this.categoryRepository.GetAsync(Guid.Parse(id));

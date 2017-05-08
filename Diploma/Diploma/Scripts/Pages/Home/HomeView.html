@@ -1,0 +1,58 @@
+﻿<div class="container-fluid pl-0" id="home">
+    <div class="row">
+        <div class="col-12 col-sm-2 p-0">
+            <ul class="list-group text-center" id="home--categories">
+                <li class="list-group-item active">Категории</li>
+                <li class="list-group-item home--categories_item" ng-repeat="category in ctrl.categories" ng-click="ctrl.viewCategory(category.id)">
+                    <p class="h4">
+                        {{category.name}}
+                    </p>
+                </li>
+            </ul>
+        </div>
+        <div class="col-12 col-sm-10 p-0" ng-show="ctrl.category != null">
+            <div class="card">
+                <div class="card-header">
+                    <p class="card-title h4 text-center">
+                        {{ctrl.category.name}}
+                    </p>
+                </div>
+                <div class="card-block">
+                    <p>
+                        {{ctrl.category.description}}
+                    </p>
+                </div>
+                <hr />
+                <div class="card-block" id="home--products" ng-show="ctrl.category.products.length > 0">
+                    <hr />
+                    <div class="home--products_item card card-outline-primary text-center mr-sm-1 mb-2" ng-repeat="product in ctrl.category.products">
+                        <div class="card-header card-primary text-white">
+                            <span class="card-title">{{product.name}}</span>
+                        </div>
+                        <img class="card-img-top home--products_item-cover" src="{{product.coverUrl}}" />
+                        <div class="card-block home--products_item-description">
+                            <p class="card-text">{{product.description}}</p>
+                        </div>
+                        <div class="card-block">
+                            <hr />
+                            <div class="d-flex justify-content-end align-items-center">
+                                <div>
+                                    <p class="h4">{{product.price}} руб.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <a class="btn btn-success text-white" href="#!/product/{{product.id}}">
+                                Подробнее
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-block text-center" ng-show="ctrl.category.products.length == 0">
+                    <h4>В категории нет товаров</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
