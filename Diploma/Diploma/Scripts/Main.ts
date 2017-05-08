@@ -10,6 +10,7 @@ import profileTemplate from './Pages/Profile/ProfileView.html'
 import editCategoryTemplate from './Pages/EditCategory/EditCategoryView.html';
 import editProductTemplate from './Pages/EditProduct/EditProductView.html';
 import homeTemplate from './Pages/Home/HomeView.html';
+import productTemplate from './Pages/Product/ProductView.html';
 
 angular.module('main',
     [
@@ -72,6 +73,14 @@ angular.module('main',
             {
                 template: homeTemplate,
                 controller: 'homeController',
+                controllerAs: 'ctrl'
+            });
+
+        $routeProvider.when('/product/:id',
+            <ng.route.IRoute>
+            {
+                template: productTemplate,
+                controller: 'productController',
                 controllerAs: 'ctrl'
             });
     })

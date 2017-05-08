@@ -1,0 +1,56 @@
+﻿<div id="product" class="container">
+    <div class="row">
+        <div class="col-12" id="product--coverUrl">
+            <img src="{{ctrl.product.coverUrl}}" />
+            <hr />
+        </div>
+        <div class="col-12">
+            <p class="h4">
+                {{ctrl.product.name}}
+            </p>
+            <hr />
+        </div>
+        <div class="col-12">
+            <p>
+                {{ctrl.product.description}}
+            </p>
+            <hr />
+        </div>
+        <div class="col-12">
+            <p class="h3">Характеристики:</p>
+            <div class="row product--characteristics" ng-repeat="characteristic in ctrl.product.characteristics">
+                <div class="col-6">
+                    <strong>
+                        {{characteristic.name}}:
+                    </strong>
+                </div>
+                <div class="col-6">
+                    {{characteristic.value}}
+                </div>
+            </div>
+        </div>
+        <div class="col-12" ng-repeat="characteristicsGroup in ctrl.product.characteristicsGroups">
+            <hr />
+            <p class="h3">{{characteristicsGroup.name}}:</p>
+
+            <div class="row product--characteristics" ng-repeat="characteristic in characteristicsGroup.characteristics">
+                <div class="col-6">
+                    <strong>
+                        {{characteristic.name}}:
+                    </strong>
+                </div>
+                <div class="col-6">
+                    {{characteristic.value}}
+                </div>
+            </div>
+        </div>
+        <div class="col-12">
+            <hr />
+        </div>
+        <div class="col-12 d-flex justify-content-end align-items-center mb-2">
+            <button class="btn btn-outline-success" ng-click="ctrl.add()">
+                <strong>Добавить в корзину</strong>
+            </button>
+        </div>
+    </div>
+</div>
