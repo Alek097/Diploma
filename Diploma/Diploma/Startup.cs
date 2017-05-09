@@ -68,6 +68,7 @@ namespace Diploma
             services.AddTransient<IProfileService, ProfileService>();
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IProductService, ProductService>();
+            services.AddTransient<IOrderService, OrderService>();
 
             services.Configure<List<OAuth>>(this.Configuration.GetSection("OAuth"));
             services.Configure<App>(this.Configuration.GetSection("App"));

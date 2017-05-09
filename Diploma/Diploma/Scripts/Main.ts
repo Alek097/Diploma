@@ -11,6 +11,7 @@ import editCategoryTemplate from './Pages/EditCategory/EditCategoryView.html';
 import editProductTemplate from './Pages/EditProduct/EditProductView.html';
 import homeTemplate from './Pages/Home/HomeView.html';
 import productTemplate from './Pages/Product/ProductView.html';
+import basketTemplate from './Pages/Basket/BasketView.html';
 
 angular.module('main',
     [
@@ -81,6 +82,14 @@ angular.module('main',
             {
                 template: productTemplate,
                 controller: 'productController',
+                controllerAs: 'ctrl'
+            });
+
+        $routeProvider.when('/basket',
+            <ng.route.IRoute>
+            {
+                template: basketTemplate,
+                controller: 'basketController',
                 controllerAs: 'ctrl'
             });
     })

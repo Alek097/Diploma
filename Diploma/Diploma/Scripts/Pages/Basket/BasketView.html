@@ -1,0 +1,35 @@
+﻿<div class="card card-outline-secondary">
+    <div class="card-block">
+        <p class="h1">Корзина</p>
+    </div>
+</div>
+<div class="container" id="basket">
+    <div class="card mb-5 basket--products_item" ng-repeat="product in ctrl.products">
+        <div class="row card-outline-secondary">
+            <div class="col-12 text-center">
+                <p class="h3">
+                    {{product.name}}
+                </p>
+            </div>
+            <div class="col-12 basket--products_item-cover">
+                <img src="{{product.coverUrl}}" />
+            </div>
+            <div class="col-12 basket--products_item-description">
+                <p>
+                    {{product.description}}
+                </p>
+            </div>
+            <div class="col-12 d-flex justify-content-around align-items-center flex-wrap">
+                <button class="btn btn-outline-danger" ng-click="ctrl.deleteProduct(product.id)">
+                    <i class="fa fa-trash fa-2x" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="d-flex justify-content-end align-items-center mb-2">
+        <button class="btn btn-outline-success" ng-click="ctrl.addOrder()">
+            <strong>Заказать</strong>
+        </button>
+    </div>
+</div>

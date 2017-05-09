@@ -5,6 +5,7 @@ import './EditCategory/EditCategoryModule';
 import './EditProduct/EditProductModule';
 import './Home/HomeModule';
 import './Product/ProductModule';
+import './Basket/BasketModule';
 
 angular.module('pages',
     [
@@ -14,5 +15,6 @@ angular.module('pages',
         'editCategory',
         'editProduct',
         'home',
-        'product'
+        'product',
+        'basket'
     ]);

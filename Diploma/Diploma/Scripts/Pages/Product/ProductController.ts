@@ -3,6 +3,7 @@ import { Product } from '../../Common/Models/Product';
 import { ErrorModalService } from '../../Common/ErrorModal/ErrorModalService';
 import { WaitModalService } from '../../Common/WaitModal/WaitModalService';
 import { MessageModalService } from '../../Common/MessageModal/MessageModalService';
+import { MainService } from '../../MainService';
 
 export class ProductController {
     public static $inject: string[] =
@@ -11,36 +12,53 @@ export class ProductController {
         'errorModalService',
         'waitModalService',
         '$routeParams',
-        'messageModalService'
+        'messageModalService',
+        'mainService'
     ];
 
     public product: Product = null;
+    public isAuthorize: boolean = false;
 
     constructor(
         private _homeService: ProductService,
         private _errorModalService: ErrorModalService,
         private _waitModalService: WaitModalService,
         params: ng.route.IRouteParamsService,
-        private _messageModalService: MessageModalService) {
+        private _messageModalService: MessageModalService,
+        mainService: MainService) {
 
         let id: string = params['id'];
 
         this._waitModalService.show();
 
-        this._homeService.getProductById(id)
+        mainService.getUser()
             .then(response => {
-                if (response.data.isSuccess) {
-                    this.product = response.data.value;
-                    this._waitModalService.close();
+                if (response.data.isSuccess && response.data.value.isAuthorize) {
+
+                    this.isAuthorize = true;
+
+                    this._homeService.getProductById(id)
+                        .then(response => {
+                            if (response.data.isSuccess) {
+                                this.product = response.data.value;
+                                this._waitModalService.close();
+                            }
+                            else {
+                                this._errorModalService.show(response.data.status, response.data.message);
+                            }
+                        },
+                        response => {
+                            this._errorModalService.show(response.data.status, response.data.message);
+
+                            setTimeout(1500, () => location.href = '/');
+                        });
                 }
                 else {
-                    this._errorModalService.show(response.data.status, response.data.message);
+                    location.href = '/';
                 }
             },
             response => {
-                this._errorModalService.show(response.data.status, response.data.message);
-
-                setTimeout(1500, () => location.href = '/');
+                location.href = '/';
             });
     }
 
