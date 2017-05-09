@@ -19,6 +19,8 @@ namespace Diploma.Data.Models
 
         public virtual ICollection<Image> Images { get; set; }
 
+        public virtual Guid? OrderId { get; set; }
+
         public Product()
         {
             this.CharacteristicsGroups = new List<CharacteristicsGroup>();

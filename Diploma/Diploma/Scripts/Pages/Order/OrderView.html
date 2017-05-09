@@ -1,0 +1,29 @@
+﻿<div class="card card-outline-secondary">
+    <div class="card-block">
+        <p class="h1">Заказы</p>
+    </div>
+</div>
+<div class="container" id="orders">
+    <div class="card card-outline-primary mb-2 orders_item" ng-repeat="order in ctrl.orders">
+        <div class="card-header">
+            <p>{{order.createDate}}</p>
+        </div>
+        <div class="card-block orders--product">
+            <div class="card card-outline-primary text-center mb-3" ng-repeat="product in order.products">
+                <div class="card-header card-primary text-white">
+                    <span class="card-title">{{product.name}}</span>
+                </div>
+                <img class="card-img-top" src="{{product.coverUrl}}" />
+                <div class="card-block">
+                    <p class="card-text">{{product.description}}</p>
+                </div>
+                <div class="card-footer">
+                    <strong>Цена: </strong><span>{{product.price}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <strong>Общая стоимость: </strong><span>{{order.totalPrice}}</span>
+        </div>
+    </div>
+</div>

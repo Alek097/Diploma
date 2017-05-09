@@ -241,6 +241,99 @@ body {
     }
 }
 
+#home {
+
+    #home--products {
+
+        @media(max-width: 800px) {
+            padding: 0px;
+        }
+
+        .home--products_item {
+            max-width: 380px;
+
+            @media(max-width: 800px) {
+                max-width: 100%;
+            }
+
+            .home--products_item-description {
+                height: 300px;
+                overflow-y: scroll;
+            }
+
+            .home--products_item-cover {
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+
+    #home--categories {
+
+        .home--categories_item {
+            cursor: pointer;
+
+            &:hover {
+                background-color: #f3eded;
+            }
+
+            p {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        .active {
+            border-top-left-radius: 0px;
+            border-top-right-radius: 0px;
+        }
+    }
+}
+
+#product {
+    #product--coverUrl {
+        img {
+            width: 100%;
+            height: auto;
+        }
+    }
+
+    .product--characteristics {
+        width: 300px;
+    }
+}
+
+#basket {
+    .basket--products_item {
+        .basket--products_item-description {
+            height: 300px;
+            overflow-y: scroll;
+        }
+
+        .basket--products_item-cover {
+            img {
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+}
+
+#orders {
+    .orders_item {
+        .orders--product{
+            height: 500px;
+            overflow-y: scroll;
+
+            img{
+                width: 100%;
+                height: auto;
+            }
+        }
+    }
+}
+
 .inputValidSucces {
     background-color: @successColor;
     color: white;

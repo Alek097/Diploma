@@ -56,7 +56,6 @@ namespace Diploma.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Administrator,Moderator")]
         public async Task<ControllerResult<CategoryViewModel>> GetCategoryById(string id)
         {
             return await this.categoryService.GetCategoryById(id);
@@ -67,6 +66,12 @@ namespace Diploma.Controllers
         public async Task<ControllerResult<string>> DeleteProduct(string productId)
         {
             return await this.productService.DeleteProduct(productId, User.Identity.Name);
+        }
+
+        [HttpGet]
+        public async Task<ControllerResult<IEnumerable<CategoryViewModel>>> GetCategories()
+        {
+            return await this.categoryService.GetCategories();
         }
     }
 }

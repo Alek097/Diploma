@@ -3,6 +3,10 @@ import './Error/ErrorModule';
 import './Profile/ProfileModule';
 import './EditCategory/EditCategoryModule';
 import './EditProduct/EditProductModule';
+import './Home/HomeModule';
+import './Product/ProductModule';
+import './Basket/BasketModule';
+import './Order/OrderModule';
 
 angular.module('pages',
     [
@@ -10,5 +14,9 @@ angular.module('pages',
         'error',
         'profile',
         'editCategory',
-        'editProduct'
+        'editProduct',
+        'home',
+        'product',
+        'basket',
+        'order'
     ]);
