@@ -99,6 +99,12 @@ namespace Diploma.BusinessLogic
             }
         }
 
+        public void Dispose()
+        {
+            this.categoryRepository.Dispose();
+            this.userRepository.Dispose();
+        }
+
         public async Task<ControllerResult<CategoryViewModel>> EditCategoty(string name, CategoryViewModel category)
         {
             User current = this.userRepository.Get()

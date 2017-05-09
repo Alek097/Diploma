@@ -86,6 +86,13 @@ namespace Diploma.BusinessLogic
             }
         }
 
+        public void Dispose()
+        {
+            this.orderRepository.Dispose();
+            this.productRepository.Dispose();
+            this.userRepository.Dispose();
+        }
+
         public async Task<ControllerResult<IEnumerable<OrderViewModel>>> GetAll()
         {
             IEnumerable<Order> orders = await this.orderRepository.GetAsync();

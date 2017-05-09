@@ -73,5 +73,12 @@ namespace Diploma.Controllers
         {
             return await this.categoryService.GetCategories();
         }
+
+        public new void Dispose()
+        {
+            this.categoryService.Dispose();
+            this.productService.Dispose();
+            base.Dispose();
+        }
     }
 }

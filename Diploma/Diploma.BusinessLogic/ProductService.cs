@@ -166,6 +166,14 @@ namespace Diploma.BusinessLogic
             }
         }
 
+        public void Dispose()
+        {
+            this.categoryRepository.Dispose();
+            this.characteristicsGroupRepository.Dispose();
+            this.productRepository.Dispose();
+            this.userRepository.Dispose();
+        }
+
         public async Task<ControllerResult> EditProduct(ProductViewModel product, string categoryId, string name)
         {
             User current = this.userRepository.Get().FirstOrDefault(user => user.UserName == name);

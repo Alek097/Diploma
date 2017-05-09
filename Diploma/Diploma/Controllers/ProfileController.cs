@@ -82,5 +82,11 @@ namespace Diploma.Controllers
         {
             return Guid.NewGuid().ToString();
         }
+
+        public new void Dispose()
+        {
+            this.profile.Dispose();
+            base.Dispose();
+        }
     }
 }

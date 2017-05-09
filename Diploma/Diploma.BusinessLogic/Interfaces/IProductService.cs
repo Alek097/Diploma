@@ -3,10 +3,11 @@ using System.Threading.Tasks;
 using Diploma.Core;
 using Diploma.Core.ViewModels;
 using Microsoft.AspNetCore.Http;
+using System;
 
 namespace Diploma.BusinessLogic.Interfaces
 {
-    public interface IProductService
+    public interface IProductService : IDisposable
     {
         Task<ControllerResult<string>> SaveCover(IFormFile cover);
         Task<ControllerResult<IEnumerable<string>>> SaveImages(ICollection<IFormFile> images);

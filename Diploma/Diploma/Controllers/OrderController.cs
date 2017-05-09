@@ -35,5 +35,11 @@ namespace Diploma.Controllers
         {
             return await this.orderService.GetAll();
         }
+
+        public new void Dispose()
+        {
+            this.orderService.Dispose();
+            base.Dispose();
+        }
     }
 }

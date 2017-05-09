@@ -128,6 +128,13 @@ namespace Diploma.BusinessLogic
             }
         }
 
+        public void Dispose()
+        {
+            this.addressRepository.Dispose();
+            this.editEmailConfirmMessageRepository.Dispose();
+            this.userRepository.Dispose();
+        }
+
         public async Task<ControllerResult<AddressViewModel>> EditAddress(string name, AddressViewModel address)
         {
             User current = this.userRepository.Get()

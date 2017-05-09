@@ -57,5 +57,11 @@ namespace Diploma.Controllers
         {
             return await this.productService.EditProduct(product, categoryId, User.Identity.Name);
         }
+
+        public new void Dispose()
+        {
+            this.productService.Dispose();
+            base.Dispose();
+        }
     }
 }
