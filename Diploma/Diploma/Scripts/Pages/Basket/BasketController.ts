@@ -59,7 +59,7 @@ export class BasketController {
 
                     localStorage.removeItem('basket');
 
-                    setTimeout(() => { location.href = '#!/Order/' }, 1500);
+                    setTimeout(() => { location.href = '#!/order/' }, 1500);
                 }
                 else {
                     this._errorModalService.show(response.data.status, response.data.value);

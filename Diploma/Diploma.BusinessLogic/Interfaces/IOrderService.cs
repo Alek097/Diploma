@@ -8,5 +8,6 @@ namespace Diploma.BusinessLogic.Interfaces
     public interface IOrderService
     {
         Task<ControllerResult<string>> AddProduct(IEnumerable<ProductViewModel> products, string name);
+        Task<ControllerResult<IEnumerable<OrderViewModel>>> GetAll();
     }
 }

@@ -62,20 +62,57 @@ namespace Diploma.BusinessLogic
                 Order order = new Order()
                 {
                     TotalPrice = totalPrice,
-                    Products = productsEntity
                 };
 
                 this.orderRepository.Add(order, current.Id);
 
                 await this.orderRepository.SaveChangesAsync();
 
+                foreach (Product item in productsEntity)
+                {
+                    item.OrderId = order.Id;
+
+                    this.productRepository.Modify(item, current.Id);
+                }
+
+                await this.productRepository.SaveChangesAsync();
+
                 return new ControllerResult<string>()
                 {
                     IsSuccess = true,
                     Status = 20,
                     Value = order.Id.ToString()
+                };
+            }
+        }
+
+        public async Task<ControllerResult<IEnumerable<OrderViewModel>>> GetAll()
+        {
+            IEnumerable<Order> orders = await this.orderRepository.GetAsync();
+
+            return new ControllerResult<IEnumerable<OrderViewModel>>()
+            {
+                IsSuccess = true,
+                Status = 200,
+                Value = orders
+                .Where(order => !(order.IsDeleted))
+                .Select(order => new OrderViewModel()
+                {
+                    TotalPrice = order.TotalPrice,
+
+                    CreateDate = order.CreateDate.ToString(),
+
+                    Products = order.Products
+                    .Select(product => new ProductViewModel()
+                    {
+                        CoverUrl = product.CoverUrl,
+                        Description = product.Description,
+                        Id = product.Id.ToString(),
+                        Name = product.Name,
+                        Price = product.Price
+                    })
+                })
             };
         }
     }
-}
 }

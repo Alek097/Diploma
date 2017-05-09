@@ -12,6 +12,7 @@ import editProductTemplate from './Pages/EditProduct/EditProductView.html';
 import homeTemplate from './Pages/Home/HomeView.html';
 import productTemplate from './Pages/Product/ProductView.html';
 import basketTemplate from './Pages/Basket/BasketView.html';
+import orderTemplate from './Pages/Order/OrderView.html';
 
 angular.module('main',
     [
@@ -90,6 +91,14 @@ angular.module('main',
             {
                 template: basketTemplate,
                 controller: 'basketController',
+                controllerAs: 'ctrl'
+            });
+
+        $routeProvider.when('/order',
+            <ng.route.IRoute>
+            {
+                template: orderTemplate,
+                controller: 'orderController',
                 controllerAs: 'ctrl'
             });
     })

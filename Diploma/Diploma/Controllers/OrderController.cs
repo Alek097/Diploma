@@ -29,5 +29,11 @@ namespace Diploma.Controllers
         {
             return await this.orderService.AddProduct(products, this.User.Identity.Name);
         }
+
+        [HttpGet]
+        public async Task<ControllerResult<IEnumerable<OrderViewModel>>> GetAll()
+        {
+            return await this.orderService.GetAll();
+        }
     }
 }

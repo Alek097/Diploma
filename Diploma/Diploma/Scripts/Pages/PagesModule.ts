@@ -6,6 +6,7 @@ import './EditProduct/EditProductModule';
 import './Home/HomeModule';
 import './Product/ProductModule';
 import './Basket/BasketModule';
+import './Order/OrderModule';
 
 angular.module('pages',
     [
@@ -16,5 +17,6 @@ angular.module('pages',
         'editProduct',
         'home',
         'product',
-        'basket'
+        'basket',
+        'order'
     ]);

@@ -6,6 +6,8 @@ namespace Diploma.Core.ViewModels
     {
         public decimal TotalPrice { get; set; }
 
+        public string CreateDate { get; set; }
+
         public IEnumerable<ProductViewModel> Products { get; set; }
 
     }
