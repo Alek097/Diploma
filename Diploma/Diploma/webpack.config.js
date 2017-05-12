@@ -3,17 +3,16 @@
 var webpack = require('webpack');
 var TransferWebpackPlugin = require('transfer-webpack-plugin');
 
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-
 module.exports = {
     entry: {
-        bundle: './Scripts/Main.ts',
-        vendor: [
+        app: [
             './node_modules/bootstrap/dist/js/bootstrap.min.js',
+            './node_modules/bootstrap/scss/bootstrap.scss',
             './node_modules/angular/angular.min.js',
             './node_modules/angular-animate/angular-animate.min.js',
             './node_modules/angular-route/angular-route.min.js',
-            './Styles/Style.less'
+            './Styles/Style.less',
+            './Scripts/Main.ts'
         ]
     },
     output: {
@@ -54,25 +53,31 @@ module.exports = {
                 use: [{
                     loader: "style-loader"
                 }, {
-                    loader: "css-loader"
+                    loader: "css-loader",
+                    options: { url: false }
                 }, {
                     loader: "less-loader"
                 }
                 ]
+            },
+            {
+                test: /\.scss$/,
+                use: [{
+                    loader: "style-loader"
+                }, {
+                    loader: "css-loader"
+                }, {
+                    loader: "sass-loader"
+                }]
             }
         ]
     },
 
     plugins: [
         new TransferWebpackPlugin([
-            { from: 'node_modules/bootstrap', to: 'lib/bootstrap' },
             { from: 'node_modules/jquery', to: 'lib/jquery' },
             { from: 'node_modules/font-awesome', to: 'lib/font-awesome' },
             { from: 'node_modules/tether', to: 'lib/tether' }
         ])
     ]
 };
-
-function GetBundles(url) {
-    return '/Bundles/' + url;
-}
